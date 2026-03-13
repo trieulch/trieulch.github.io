@@ -1,0 +1,223 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+<title>E-Commerce Analytics | End-to-End SQL Business Analysis</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<link rel="stylesheet" href="assets/css/main.css"/>
+
+<style>
+
+.project-container{
+max-width:1000px;
+margin:auto;
+text-align:left;
+}
+
+.project-container h1{
+margin-bottom:10px;
+}
+
+.project-container h2{
+margin-top:50px;
+}
+
+.project-container img{
+width:100%;
+margin:25px 0;
+border-radius:6px;
+}
+
+.section{
+margin-top:50px;
+}
+
+.button-group{
+margin-top:40px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="page-wrapper">
+
+<header id="header">
+<h1><a href="index.html">Trieus' Portfolio</a></h1>
+</header>
+
+<section id="wrapper">
+<div class="wrapper">
+<div class="inner project-container">
+
+<h1>E-Commerce Analytics | End-to-End SQL Business Analysis</h1>
+
+<h2>Overview</h2>
+
+<p>
+This project performs a comprehensive <strong>end-to-end analysis of an e-commerce business</strong>
+using <strong>MySQL</strong>, <strong>Python</strong> replicating real-world analytical workflows used by Data Analysts
+in technology companies.
+</p>
+
+<p>
+The dataset contains realistic transactional,
+behavioral, and marketing data, enabling deep analysis across:
+</p>
+
+<ul>
+<li>Traffic acquisition</li>
+<li>Website performance</li>
+<li>Conversion funnel optimization</li>
+<li>Marketing channel performance</li>
+<li>Product performance</li>
+<li>User retention</li>
+<li>Business growth and seasonality</li>
+</ul>
+<p>
+The threshold constraint:<br>
+<li>Conversion Rate: 4%</li>
+<p></p>
+<p>
+The goal is to answer stakeholder questions and generate insights to support
+<strong>marketing, product, and executive decision-making</strong>.
+</p>
+
+<div class="section">
+
+<h2>Dataset Structure</h2>
+
+<ul>
+<li><strong>website_sessions</strong> — traffic source, device, and session information</li>
+<li><strong>website_pageviews</strong> — user navigation behavior</li>
+<li><strong>orders</strong> — transaction records</li>
+<li><strong>order_items</strong> — product-level purchase details</li>
+</ul>
+
+</div>
+
+<div class="section">
+
+<h2>1. Traffic Analysis & Optimization</h2>
+
+<h3>Top Traffic Sources</h3>
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Traffic%20Analysis%20%26%20Optimization/Results/1_traffic_source_analysis.png">
+The 'gsearch' source and 'nonbrand' campaign contributes <Strong>97.4%</Strong> of the total traffic, indicating that it is the most significant one.</li>
+<h3>Conversion Rates by Top Traffic Source</h3>
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Traffic%20Analysis%20%26%20Optimization/Results/2_traffic_source_analysis.png">
+The conversion rate of the 'gsearch' source and 'nonbrand'  is <Strong>2.96%</Strong> (≤ 4%)</li>
+
+<h3>Conversion Rate & Cost Per Conversion & Cost Per Action of top Traffic Source by Device type</h3>
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Traffic%20Analysis%20%26%20Optimization/Results/5_traffic_source_analysis.png">
+The conversion per action for desktop devices is significantly better at <strong>53.62</strong>. Therefore, we propose reallocating more marketing budget to desktop, as it appears to be more efficient.</li>
+
+<h3>Traffic Analysis for Product Launch Period</h3>
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Traffic%20Analysis%20%26%20Optimization/Results/3_traffic_source_analysis.png">
+However, the conversion rate threshold is <strong>4%</strong>. Therefore, we decided to bid down on the desktop segment, which resulted in a avg <strong>42.5%</strong> decrease in volume.</li>
+</div>
+
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Traffic%20Analysis%20%26%20Optimization/Results/6_traffic_source_analysis.png">
+The visualization presents a bid down from <strong>'Pre'</strong> bid launch and <strong>'Post'</strong> bid launch.</li>
+<div class="section">
+
+<h2>2. Website Measurement & Testing</h2>
+Sales funnel: <strong>/home</strong> -> <strong>/products</strong>-> <strong>/the-original-mr-fuzzy</strong> -> <strong>/cart</strong> -> <strong>/shipping</strong> -> <strong>/billing</strong -> <strong>/thanks</strong><br>
+<h3>Most Visited Pages</h3>
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Website%20Measurement%20%26%20Testing/Results/1_website_measurement_testing.png">
+Seems the first three get a bulk of our session, and people comes through our webpage mostly by <strong>/home</strong>. Taking a look at homepage's performance after couple days<br>
+   
+<h3>Bounce Rate Analysis</h3>
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Website%20Measurement%20%26%20Testing/Results/3_website_measurement_testing.png">
+A <strong>59.18%</strong> bounce rate is quite severe. Therefore, it is suggested to test a new landing page as a solution.</strong>
+<h3>Landing Page Test Results</h3>
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Website%20Measurement%20%26%20Testing/Results/4_website_measurement_testing.png">
+A <strong>5.12%</strong> improvement on bounce rate. And management team wants to see a overall pageview performance from week 22 to 35.
+<h3>Landing Page Trend</h3>
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Website%20Measurement%20%26%20Testing/Results/5_website_measurement_testing.png">
+
+<h3>Conversion Funnel</h3>
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Website%20Measurement%20%26%20Testing/Results/6_website_measurement_testing.png">
+
+<h3>Funnel Test Comparison</h3>
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Website%20Measurement%20%26%20Testing/Results/7_website_measurement_testing.png">
+
+</div>
+
+<div class="section">
+
+<h2>3. Channel Analysis & Optimization</h2>
+
+<img src="https://github.com/trieulch/E-commerce-Analysis/blob/main/Channel%20Analysis%20%26%20Optimization/Result/1_Channel_Analysis_Optimization.png?raw=true">
+<img src="https://github.com/trieulch/E-commerce-Analysis/blob/main/Channel%20Analysis%20%26%20Optimization/Result/2_Channel_Analysis_Optimization.png?raw=true">
+<img src="https://github.com/trieulch/E-commerce-Analysis/blob/main/Channel%20Analysis%20%26%20Optimization/Result/3_Channel_Analysis_Optimization.png?raw=true">
+<img src="https://github.com/trieulch/E-commerce-Analysis/blob/main/Channel%20Analysis%20%26%20Optimization/Result/4_Channel_Analysis_Optimization.png?raw=true">
+<img src="https://github.com/trieulch/E-commerce-Analysis/blob/main/Channel%20%20Analysis%20%26%20Optimization/Result/5_Channel_Analysis_Optimization.png?raw=true">
+
+</div>
+
+<div class="section">
+
+<h2>4. Business Patterns & Seasonality</h2>
+
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Business%20Patterns%20and%20Seasonality%20Analysis/Result/1_Business_Patterns_And_Seasonality_Analysis.png">
+<img src="https://github.com/trieulch/E-commerce-Analysis/blob/main/Business%20Patterns%20and%20Seasonality%20Analysis/sessions_by_week.png?raw=true">
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Business%20Patterns%20and%20Seasonality%20Analysis/Result/2_Business_Patterns_And_Seasonality_Analysis.png">
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/main/Business%20Patterns%20and%20Seasonality%20Analysis/Heatmap_sesions_by_hour_day.png">
+
+</div>
+
+<div class="section">
+
+<h2>5. Product-Level Analysis</h2>
+
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Product%20Level%20Analysis/Results/1_Product_Level_Analysis.png">
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Product%20Level%20Analysis/Results/2_Product_Level_Analysis.png">
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Product%20Level%20Analysis/Results/3_Product_Level_Analysis.png">
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Product%20Level%20Analysis/Results/4_Product_Level_Analysis.png">
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Product%20Level%20Analysis/Results/5_Product_Level_Analysis.png">
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Product%20Level%20Analysis/Results/6_Product_Level_Analysis.png">
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Product%20Level%20Analysis/Results/7_Product_Level_Analysis.png">
+
+</div>
+
+<div class="section">
+
+<h2>6. User-Level Analysis</h2>
+
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/User%20Level%20Analysis/Results/1_User_Level_Analysis.png">
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/User%20Level%20Analysis/Results/2_User_Level_Analysis.png">
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/User%20Level%20Analysis/Results/3_User_Level_Analysis.png">
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/User%20Level%20Analysis/Results/4_User_Level_Analysis.png">
+
+</div>
+
+<div class="button-group">
+<a href="https://github.com/trieulch/E-commerce-Analysis" class="button primary icon brands fa-github">
+View Full Project on GitHub
+</a>
+
+<a href="index.html" class="button">
+Back to Portfolio
+</a>
+</div>
+
+</div>
+</div>
+</section>
+
+<footer id="footer">
+<div class="inner">
+<ul class="copyright">
+<li>&copy; Le Chi Hoang Trieu</li>
+</ul>
+</div>
+</footer>
+
+</div>
+
+</body>
+</html>
