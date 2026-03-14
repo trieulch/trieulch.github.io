@@ -121,7 +121,7 @@ However, the conversion rate threshold is <strong>4%</strong>. Therefore, we dec
 </div>
 
 <img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Traffic%20Analysis%20%26%20Optimization/Results/6_traffic_source_analysis.png">
-The visualization presents a bid down from <strong>'Pre'</strong> bid launch and <strong>'Post'</strong> bid launch.</li>
+The visualization presents a bid down before bid launch <strong>'Pre'</strong>  and after  bid launch <strong>'Post'</strong>.</li>
 <div class="section">
 
 <h2>2. Website Measurement & Testing</h2>
@@ -138,50 +138,80 @@ A <strong>59.18%</strong> bounce rate is quite severe. Therefore, it is suggeste
 A <strong>5.12%</strong> improvement on bounce rate. And management team wants to see a overall pageview performance from week 22 to 35.
 <h3>Landing Page Trend</h3>
 <img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Website%20Measurement%20%26%20Testing/Results/5_website_measurement_testing.png">
-
+There is a traffic change & shift when launching a new homepage. Period: Week 25-30 because it appears as a stable dataset | Resulting: in total the bounce rate improved from <strong>58.16%</strong> to <strong>53.14%(5% changes)</strong>
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Website%20Measurement%20%26%20Testing/Results/8_website_measurement_testing.png">
+Visualization presents a big traffic change & shift on launching period of sessions
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Website%20Measurement%20%26%20Testing/Results/9_website_measurement_testing.png">
+Visualization presents a big traffic change & shift on launching period of bounced sessions
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Website%20Measurement%20%26%20Testing/Results/10_website_measurement_testing.png">
+Visualization presents a improvement on launching period of bounced rate.
 <h3>Conversion Funnel</h3>
 <img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Website%20Measurement%20%26%20Testing/Results/6_website_measurement_testing.png">
-
+Billing_page seems to be the most ineffcient conversion rate(43.02%), new billing page is bound to launch.
 <h3>Funnel Test Comparison</h3>
 <img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Website%20Measurement%20%26%20Testing/Results/7_website_measurement_testing.png">
-
+2-month experiment, conversion rate improved from <strong>45.66%</strong> to <strong>62.63%</strong>
 </div>
 
 <div class="section">
 
 <h2>3. Channel Analysis & Optimization</h2>
-
+<h3>Channel Portfolio Trend</h3>
 <img src="https://github.com/trieulch/E-commerce-Analysis/blob/main/Channel%20Analysis%20%26%20Optimization/Result/1_Channel_Analysis_Optimization.png?raw=true">
+Weekly sessions from week 34 to week 48, with a noticeable spike in <strong>week 47(black friday week)</strong>.
+<img src="https://github.com/trieulch/E-commerce-Analysis/blob/main/Channel%20Analysis%20%26%20Optimization/Result/6_Channel_Analysis_Optimization.png?raw=true">
+Visualization presents trend & WoW of 2 main channels.
+<h3>Channel Portfolio Analysis by mobile device</h3>
 <img src="https://github.com/trieulch/E-commerce-Analysis/blob/main/Channel%20Analysis%20%26%20Optimization/Result/2_Channel_Analysis_Optimization.png?raw=true">
+The percentage of mobile sessions of 'gsearch' seems better than 'bsearch'. With <strong>24.52% > 8.62%</strong>.
+<h3>Channel Portfolio Analysis by device type</h3> 
 <img src="https://github.com/trieulch/E-commerce-Analysis/blob/main/Channel%20Analysis%20%26%20Optimization/Result/3_Channel_Analysis_Optimization.png?raw=true">
+Generally, 'gsearch' still performs better than 'bsearch'. A slight bid down is conducted on 'bsearch'.
 <img src="https://github.com/trieulch/E-commerce-Analysis/blob/main/Channel%20Analysis%20%26%20Optimization/Result/4_Channel_Analysis_Optimization.png?raw=true">
-<img src="https://github.com/trieulch/E-commerce-Analysis/blob/main/Channel%20%20Analysis%20%26%20Optimization/Result/5_Channel_Analysis_Optimization.png?raw=true">
-
+In the period from week 45 to week 51, 'bsearch' sessions slightly decreased. There is also a drop for both channels after Black Friday.
+<img src="https://github.com/trieulch/E-commerce-Analysis/blob/main/Channel%20Analysis%20%26%20Optimization/Result/5_Channel_Analysis_Optimization.png?raw=true">
+Not only is traffic growing in <strong>nonbrand</strong>, but <strong>brand, direct, and indirect traffic</strong> are also growing. The percentage attributed to nonbrand is also increasing.
 </div>
 
 <div class="section">
 
 <h2>4. Business Patterns & Seasonality</h2>
-
+<h3>Overview Business Performance</h3> 
 <img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Business%20Patterns%20and%20Seasonality%20Analysis/Result/1_Business_Patterns_And_Seasonality_Analysis.png">
 <img src="https://github.com/trieulch/E-commerce-Analysis/blob/main/Business%20Patterns%20and%20Seasonality%20Analysis/sessions_by_week.png?raw=true">
-<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Business%20Patterns%20and%20Seasonality%20Analysis/Result/2_Business_Patterns_And_Seasonality_Analysis.png">
-<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/main/Business%20Patterns%20and%20Seasonality%20Analysis/Heatmap_sesions_by_hour_day.png">
-
+Analyzing sessions by week-year segments, we observe consistent year-over-year growth. Notable spikes appear during Black Friday and Cyber Monday. Overall, annual sessions increased by 93.75%, while annual orders grew by 157.19%.<br>
+Then I do a basic correlation analysis between sessions and conversion rate.
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Business%20Patterns%20and%20Seasonality%20Analysis/Result/3_Business_Patterns_And_Seasonality_Analysis.png">
+R² = 0.4414 indicates a moderate correlation. However, this is only a preliminary indication. We did not further investigate this relationship, as it may be influenced by multiple factors such as seasonal trends, customer type (new vs. returning), promotions, and traffic channels.<br>
+If there is any further discussion, please direct me on this one. We will have a little chat about the regression model/statistics/pair-test,...
+<h3>Business Pattern</h3> 
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Business%20Patterns%20and%20Seasonality%20Analysis/Result/2_Business_Patterns_And_Seasonality_Analysis.png"><br>
+From 9:00 AM to 5:00 PM on weekdays, our traffic seems busier than on weekends and during other hours.<br>
+<img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/main/Business%20Patterns%20and%20Seasonality%20Analysis/Heatmap_sesions_by_hour_day.png"><br>
+Visualization presents a busy time by hour and day.<br>
 </div>
 
 <div class="section">
 
 <h2>5. Product-Level Analysis</h2>
-
+<h3>Products Sales</h3> 
 <img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Product%20Level%20Analysis/Results/1_Product_Level_Analysis.png">
+Both revenue and margin are growing with avg <strong>29.21%</strong> MoM
 <img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Product%20Level%20Analysis/Results/2_Product_Level_Analysis.png">
+The new product was launched in January 2013. Although sales dropped slightly at launch, revenue per session and the conversion rate have been growing well.<br>
+<h3>Products Launch Analysis</h3> 
 <img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Product%20Level%20Analysis/Results/3_Product_Level_Analysis.png">
+It looks like the click-through rate of the mrfuzzy product has decreased since the new product was launched.<br>
 <img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Product%20Level%20Analysis/Results/4_Product_Level_Analysis.png">
+After product launch, the new product(lovebear) performs a good number on funnel conversion.<br>
 <img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Product%20Level%20Analysis/Results/5_Product_Level_Analysis.png">
+After adding cross-selling features at the <strong>/cart page</strong>, the click-through rate is strong. Customers appear to be ordering more, and both AOV and revenue per cart session are increasing.<br>
 <img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Product%20Level%20Analysis/Results/6_Product_Level_Analysis.png">
+All critical metrics have improved since the launch of third product.
+<h3>Products Return Analysis</h3> 
 <img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Product%20Level%20Analysis/Results/7_Product_Level_Analysis.png">
-
+In Aug and Sep 2014, Product 1 had an unusual refund rate (~14%). After validating with the operations team, the reason was identified as a quality malfunction. The rejection rate of other products remained under control.<br>
+</be>
 </div>
 
 <div class="section">
@@ -189,10 +219,15 @@ A <strong>5.12%</strong> improvement on bounce rate. And management team wants t
 <h2>6. User-Level Analysis</h2>
 
 <img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/User%20Level%20Analysis/Results/1_User_Level_Analysis.png">
+In total, we have 145,900 users. Among them, 89.62% are new users, 9.65% are one-time repeat customers, 0.22% are two-time repeat customers, and 3.21% are three-time repeat customers.<br>
 <img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/User%20Level%20Analysis/Results/2_User_Level_Analysis.png">
+Min session duration is 1m<br>
+Max session duration is 69m <br>
+Average session duration is 33.24m<br>
 <img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/User%20Level%20Analysis/Results/3_User_Level_Analysis.png">
+Most new sessions come from the paid_nonbrand channel, indicating good marketing performance. Direct_type_in, organic_search, and paid_brand have a high number of repeat sessions, which suggests strong customer retention.<br>
 <img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/User%20Level%20Analysis/Results/4_User_Level_Analysis.png">
-
+It appears that returning customers drive strong sales performance, with a conversion rate higher than 1.31% and revenue per session exceeding ~0.8.<br>
 </div>
 
 <div class="button-group">
