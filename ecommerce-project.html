@@ -79,9 +79,11 @@ behavioral, and marketing data, enabling deep analysis across:
 <li>Business growth and seasonality</li>
 </ul>
 <ul>
-<h2>Threshold & Information:</h2>
+<h2>Information:</h2>
 <li>Targeted Conversion Rate: 4%</li>
 <li>Cost Per Conversion: 2</li>
+<li>Sales funnel: <strong>/home</strong> -> <strong>/products</strong>-> <strong>/(product-name)</strong> -> <strong>/cart</strong> -> <strong>/shipping</strong> -> <strong>/billing</strong -> <strong>/thanks</strong></li>
+<li>4-product launch period: mrfuzzy, lovebear, birthday panda, mini-bear</li>
 
 </ul>
 <p>
@@ -94,10 +96,11 @@ The goal is to answer stakeholder questions and generate insights to support
 <h2>Dataset Structure</h2>
 
 <ul>
-<li><strong>website_sessions</strong> — traffic source, device, and session information</li>
-<li><strong>website_pageviews</strong> — user navigation behavior</li>
+<li><strong>website_sessions</strong> — traffic source, device, and session information, 500k+ rows</li>
+<li><strong>website_pageviews</strong> — user navigation behavior, 1m3+ rows</li>
 <li><strong>orders</strong> — transaction records</li>
 <li><strong>order_items</strong> — product-level purchase details</li>
+<li><strong>order_items_refund</strong> — product-level return details</li>
 </ul>
 
 </div>
@@ -115,8 +118,7 @@ The conversion rate of the 'gsearch' source and 'nonbrand'  is <Strong>2.96%</St
 
 <h3>Conversion Rate & Cost Per Conversion & Cost Per Action of top Traffic Source by Device type</h3>
 <img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Traffic%20Analysis%20%26%20Optimization/Results/5_traffic_source_analysis.png">
-The conversion per action for desktop devices is significantly better at <strong>53.62</strong>. Therefore, we propose reallocating more marketing budget to desktop, as it appears to be more efficient.</li>
-
+After one month, traffic source performance broken down by device type shows that the conversion per action on desktop devices is significantly better, at <strong>53.62</strong>. Therefore, we propose reallocating more marketing budget to desktop, as it appears to be more efficient.<br>
 <h3>Traffic Analysis for Bid Launch</h3>
 <img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Traffic%20Analysis%20%26%20Optimization/Results/3_traffic_source_analysis.png">
 However, the conversion rate threshold is <strong>4%</strong>. Therefore, we decided to bid down on the desktop segment, which resulted in a avg <strong>42.5%</strong> decrease in volume.</li>
@@ -127,7 +129,6 @@ The visualization presents a bid down before bid launch <strong>'Pre'</strong>  
 <div class="section">
 
 <h2>2. Website Measurement & Testing</h2>
-Sales funnel: <strong>/home</strong> -> <strong>/products</strong>-> <strong>/the-original-mr-fuzzy</strong> -> <strong>/cart</strong> -> <strong>/shipping</strong> -> <strong>/billing</strong -> <strong>/thanks</strong><br>
 <h3>Most Visited Pages</h3>
 <img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Website%20Measurement%20%26%20Testing/Results/1_website_measurement_testing.png">
 Seems the first three get a bulk of our session, and people comes through our webpage mostly by <strong>/home</strong>. Taking a look at homepage's performance after couple days<br>
@@ -182,7 +183,7 @@ Not only is traffic growing in <strong>nonbrand</strong>, but <strong>brand, dir
 <h3>Overview Business Performance</h3> 
 <img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Business%20Patterns%20and%20Seasonality%20Analysis/Result/1_Business_Patterns_And_Seasonality_Analysis.png">
 <img src="https://github.com/trieulch/E-commerce-Analysis/blob/main/Business%20Patterns%20and%20Seasonality%20Analysis/sessions_by_week.png?raw=true">
-Analyzing sessions by week-year segments, we observe consistent year-over-year growth. Notable spikes appear during Black Friday and Cyber Monday. Overall, annual sessions increased by 93.75%, while annual orders grew by 157.19%.<br>
+Analyzing sessions by week-year segments, we observe consistent year-over-year growth. Notable spikes appear during Black Friday and Cyber Monday(Week 47). Overall, annual sessions increased by 93.75%, while annual orders grew by 157.19%.<br>
 Then I do a basic correlation analysis between sessions and conversion rate.
 <img src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/refs/heads/main/Business%20Patterns%20and%20Seasonality%20Analysis/Result/3_Business_Patterns_And_Seasonality_Analysis.png">
 R² = 0.4414 indicates a moderate correlation. However, this is only a preliminary indication. We did not further investigate this relationship, as it may be influenced by multiple factors such as seasonal trends, customer type (new vs. returning), promotions, and traffic channels.<br>
