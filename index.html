@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Trieu Le, data analyst. SQL, Python and Power BI.">
+<title>Trieu Le</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one calm left-aligned column over a full-viewport particle field.
+   Hero is the name, a two-line bio and links; work, experience and skills follow as plain lists. */
+:root {
+  --bg: #0a0c0f;
+  --fg: #e7eaed;
+  --muted: #8a949d;
+  --line: #1d242b;
+  --accent: #e3a857;
+  --particle-rgb: 190, 205, 215;
+  --accent-rgb: 227, 168, 87;
+  --blue-rgb: 140, 200, 255;
+  --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #f5f6f7;
+    --fg: #12161a;
+    --muted: #59636c;
+    --line: #dce0e4;
+    --accent: #9c5a0e;
+    --particle-rgb: 40, 55, 70;
+    --accent-rgb: 156, 90, 14;
+    --blue-rgb: 30, 120, 210;
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #f5f6f7;
+  --fg: #12161a;
+  --muted: #59636c;
+  --line: #dce0e4;
+  --accent: #9c5a0e;
+  --particle-rgb: 40, 55, 70;
+  --accent-rgb: 156, 90, 14;
+  --blue-rgb: 30, 120, 210;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--body);
+  font-size: 1rem;
+  line-height: 1.6;
+  padding-block: clamp(3rem, 12vh, 7rem) 3rem;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  -webkit-font-smoothing: antialiased;
+}
+
+#field {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 42rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3rem, 8vw, 4.5rem);
+}
+
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+.label {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Hero */
+.hero { display: flex; flex-direction: column; gap: 1.25rem; }
+.handle { color: var(--accent); }
+h1 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(3rem, 11vw, 5rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.bio {
+  margin: 0;
+  max-width: 34rem;
+  font-size: 1.125rem;
+  color: var(--fg);
+  text-wrap: pretty;
+}
+.bio .more {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--muted);
+}
+.nowrap { white-space: nowrap; }
+
+.links { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; margin-top: 0.5rem; }
+.links a, .copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--muted);
+  text-decoration: none;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  transition: color 0.15s;
+}
+.links a:hover, .copy:hover { color: var(--fg); }
+.links svg { width: 1.125rem; height: 1.125rem; fill: currentColor; flex: none; }
+.copy {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  min-width: 0;
+  text-align: left;
+}
+.copy .addr { overflow-wrap: anywhere; }
+.copy .tag {
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.hint {
+  margin: 0.75rem 0 0;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+  transition: opacity 0.6s;
+}
+.hint.gone { opacity: 0; }
+
+/* Sections */
+section { display: flex; flex-direction: column; gap: 1.25rem; }
+section > .label { margin: 0; }
+
+.rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.row {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  gap: 0.25rem 1.5rem;
+  padding-block: 1.1rem;
+  border-top: 1px solid var(--line);
+}
+.row:last-child { border-bottom: 1px solid var(--line); }
+.row .when {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+  padding-top: 0.3rem;
+}
+.row h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 1.1875rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+.row h3 a { text-decoration: none; border-bottom: 1px solid var(--line); transition: border-color 0.15s; }
+.row h3 a:hover { border-color: var(--accent); }
+.row h3 .role { font-family: var(--body); font-weight: 400; font-size: 0.9375rem; letter-spacing: 0; color: var(--muted); }
+.row p { margin: 0.25rem 0 0; color: var(--muted); font-size: 0.9375rem; text-wrap: pretty; }
+.row .stat { color: var(--fg); font-variant-numeric: tabular-nums; }
+.row .tools { margin-top: 0.5rem; font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
+.row .body { min-width: 0; }
+.rows.plain .row { grid-template-columns: minmax(0, 1fr); }
+
+.facts { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: 0.6rem 1.5rem; margin: 0; }
+.facts dt { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); padding-top: 0.2rem; }
+.facts dd { margin: 0; min-width: 0; }
+
+footer {
+  position: relative;
+  z-index: 1;
+  max-width: 42rem;
+  margin: 3.5rem auto 0;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+@media (max-width: 34rem) {
+  .row, .facts { grid-template-columns: minmax(0, 1fr); }
+  .row .when, .facts dt { padding-top: 0; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="field" aria-hidden="true"></canvas>
+
+<main class="wrap">
+  <header class="hero">
+    <div class="label handle">Ronnie</div>
+    <h1>Trieu Le</h1>
+    <p class="bio">Analyst with over 3 years of experience working in MNCs across manufacturing and asset integrity sectors. <span class="more">Specializing in statistical analysis, forecasting, and hypothesis testing. Strong business acumen with the ability to turn data into actionable insights that solve business problems and drive operational efficiency and growth. Working with AI, SQL, Python, and Power BI, I’m now focused on applying this toolkit to <span class="nowrap">e-commerce</span> and finance.</span></p>
+    <div class="links">
+      <a href="https://github.com/trieulch" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.37-3.87-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>
+      </a>
+      <a href="https://linkedin.com/in/trieulch" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05a3.75 3.75 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>
+      </a>
+      <button class="copy" id="copy" type="button" aria-label="Copy email address">
+        <svg viewBox="0 0 24 24" aria-hidden="true" style="width:1.125rem;height:1.125rem;fill:currentColor;flex:none"><path d="M3 5.5A2.5 2.5 0 0 1 5.5 3h13A2.5 2.5 0 0 1 21 5.5v13a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 18.5v-13Zm2.2.6 6.8 5.1 6.8-5.1a.5.5 0 0 0-.3-.1h-13a.5.5 0 0 0-.3.1Zm13.8 1.7-6.4 4.8a1 1 0 0 1-1.2 0L5 7.8v10.7c0 .28.22.5.5.5h13a.5.5 0 0 0 .5-.5V7.8Z"/></svg>
+        <span class="addr" id="addr" hidden>trieulech1409@gmail.com</span>
+        <span class="tag" id="tag" hidden>copy</span>
+      </button>
+    </div>
+  </header>
+
+  <section id="experience">
+    <h2 class="label">Experience</h2>
+    <ul class="rows">
+      <li class="row">
+        <div class="when">Mar/25 – present</div>
+        <div class="body">
+          <h3><a href="https://www.rosen-group.com/en" target="_blank" rel="noopener">ROSEN Group</a> <span class="role">- Data Analyst</span></h3>
+          <p>Cross-regional commercial pipeline analysis for 6+ stakeholders across APAC, ME, EU, NA and SA, with 20+ Excel formulas, SQL queries and Python scripts for analysis and automation.</p>
+        </div>
+      </li>
+      <li class="row">
+        <div class="when">Jan/24 – Feb/25</div>
+        <div class="body">
+          <h3><a href="https://www.stella.com.hk" target="_blank" rel="noopener">Stella International Holdings Limited</a> <span class="role">- Data Analyst</span></h3>
+          <p>Built Power BI dashboards for real-time shop floor monitoring and handled 100+ ad-hoc requests in Excel, Power Query and SQL.</p>
+        </div>
+      </li>
+      <li class="row">
+        <div class="when">Jun – Nov/23</div>
+        <div class="body">
+          <h3>Domestic Metal Fabrication <span class="role">- Business Analyst</span></h3>
+          <p>Supported cost reduction through LEAN projects.</p>
+        </div>
+      </li>
+      <li class="row">
+        <div class="when">Jun – Aug/22</div>
+        <div class="body">
+          <h3><a href="https://www.bcfiber.com/" target="_blank" rel="noopener">Vietfiber</a> <span class="role">- Industrial Engineer Intern</span></h3>
+          <p>Manufacturing cost analysis and process improvement.</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section id="work">
+    <h2 class="label">Projects</h2>
+    <ul class="rows plain">
+      <li class="row">
+        <div class="body">
+          <h3><a href="https://github.com/trieulch/E-commerce-Analysis" target="_blank" rel="noopener">E-commerce Performance Analysis</a></h3>
+          <p>Exploratory analysis of user behaviour and page performance. Checkout conversion rose <span class="stat">16.97%</span> and average order value <span class="stat">5.5%</span> ~1m2 records.</p>
+        </div>
+      </li>
+      <li class="row">
+        <div class="body">
+          <h3><a href="https://app.powerbi.com/view?r=eyJrIjoiNDQ0MTI1OGQtYzJjNC00NGEwLWFmNGUtZjg3YzJiZjU5ZDQ1IiwidCI6ImNiNDg0NDZlLTkwZTYtNGJmMS04MjViLTQwZTQ4ZmNjOWZmNiJ9" target="_blank" rel="noopener">Sales &amp; Products Dashboard</a></h3>
+          <p>Interactive view of sales metrics, customer geography and product performance ~ 56k records.</p>
+        </div>
+      </li>
+      <li class="row">
+        <div class="body">
+          <h3><a href="https://raw.githubusercontent.com/trieulch/trieulch.github.io/refs/heads/main/images/1740379623029.jpg" target="_blank" rel="noopener">Manufacturing Analytics Dashboard</a></h3>
+          <p>Automated reporting and standardised KPI tracking for <span class="stat">200+</span> workers, which lifted line efficiency by <span class="stat">15%</span>.</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section id="skills">
+    <h2 class="label">Skills</h2>
+    <dl class="facts">
+      <dt>Tools</dt><dd>SQL, Python, Power BI, DAX, Looker, Power Query (M), Excel</dd>
+      <dt>Cloud</dt><dd>Azure, Google Cloud Platform</dd>
+      <dt>Certified</dt><dd>Microsoft Power BI Data Analyst, Data Engineer on Microsoft Azure, Advanced SQL for E-commerce (Udemy)</dd>
+      <dt>Languages</dt><dd>Vietnamese (native), English (full professional, TOEIC 860)</dd>
+    </dl>
+  </section>
+
+  <section id="education">
+    <h2 class="label">Education</h2>
+    <ul class="rows">
+      <li class="row">
+        <div class="when">2019 – 2023</div>
+        <div class="body">
+          <h3>Ho Chi Minh City University of Technology</h3>
+          <p>BSc Industrial Systems Engineering</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+</main>
+
+<footer>© 2026 Le Chi Hoang Trieu</footer>
+
+<script>
+(function () {
+  var cv = document.getElementById('field');
+  var ctx = cv.getContext('2d');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var W = 0, H = 0, dpr = 1;
+  var parts = [], ripples = [];
+  var colors = { base: [190, 205, 215], acc: [227, 168, 87], blue: [140, 200, 255] };
+
+  function rgbArr(str, fallback) {
+    var a = str.split(',').map(function (n) { return parseFloat(n); });
+    return a.length === 3 && a.every(function (n) { return !isNaN(n); }) ? a : fallback;
+  }
+  function mix(c, t) {
+    var b = colors.blue;
+    return Math.round(c[0] + (b[0] - c[0]) * t) + ',' +
+           Math.round(c[1] + (b[1] - c[1]) * t) + ',' +
+           Math.round(c[2] + (b[2] - c[2]) * t);
+  }
+  var ptr = { x: -9999, y: -9999 };
+  var hint = document.getElementById('hint');
+
+  function readColors() {
+    var s = getComputedStyle(document.documentElement);
+    colors.base = rgbArr(s.getPropertyValue('--particle-rgb'), colors.base);
+    colors.acc = rgbArr(s.getPropertyValue('--accent-rgb'), colors.acc);
+    colors.blue = rgbArr(s.getPropertyValue('--blue-rgb'), colors.blue);
+    if (reduce) draw();
+  }
+
+  function make(x, y, burst) {
+    var ang = Math.random() * Math.PI * 2;
+    var sp = burst ? 1.4 + Math.random() * 2.2 : 0.06 + Math.random() * 0.2;
+    var bx = burst ? 0 : Math.cos(ang) * sp;
+    var by = burst ? 0 : Math.sin(ang) * sp;
+    return {
+      x: x, y: y,
+      vx: burst ? Math.cos(ang) * sp : bx,
+      vy: burst ? Math.sin(ang) * sp : by,
+      bx: bx, by: by,
+      r: 1 + Math.random() * 1.5,
+      acc: Math.random() < 0.12,
+      tint: burst ? 1 : 0,
+      life: burst ? 1 : -1
+    };
+  }
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth;
+    H = window.innerHeight;
+    cv.width = Math.round(W * dpr);
+    cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var n = Math.min(130, Math.round((W * H) / 11000));
+    var base = parts.filter(function (p) { return p.life < 0; });
+    var burst = parts.filter(function (p) { return p.life >= 0; });
+    while (base.length < n) base.push(make(Math.random() * W, Math.random() * H, false));
+    base.length = n;
+    parts = base.concat(burst);
+    if (reduce) draw();
+  }
+
+  function step() {
+    var i, p, dx, dy, d;
+    for (i = parts.length - 1; i >= 0; i--) {
+      p = parts[i];
+      dx = p.x - ptr.x; dy = p.y - ptr.y;
+      d = Math.sqrt(dx * dx + dy * dy);
+      if (d < 110 && d > 0.1) {
+        var f = (1 - d / 110) * 0.35;
+        p.vx += (dx / d) * f;
+        p.vy += (dy / d) * f;
+      }
+      p.vx += (p.bx - p.vx) * 0.02;
+      p.vy += (p.by - p.vy) * 0.02;
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.tint > 0 && p.life < 0) p.tint = Math.max(0, p.tint - 0.0022);
+      if (p.life >= 0) {
+        p.life -= 0.011;
+        if (p.life <= 0) { parts.splice(i, 1); continue; }
+      } else {
+        if (p.x < -10) p.x = W + 10; else if (p.x > W + 10) p.x = -10;
+        if (p.y < -10) p.y = H + 10; else if (p.y > H + 10) p.y = -10;
+      }
+    }
+    for (i = ripples.length - 1; i >= 0; i--) {
+      ripples[i].r += 4.5;
+      ripples[i].a -= 0.025;
+      if (ripples[i].a <= 0) ripples.splice(i, 1);
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    var i, j, a, b, dx, dy, d, al;
+    ctx.lineWidth = 1;
+    for (i = 0; i < parts.length; i++) {
+      a = parts[i];
+      for (j = i + 1; j < parts.length; j++) {
+        b = parts[j];
+        dx = a.x - b.x; dy = a.y - b.y;
+        if (dx > 100 || dx < -100 || dy > 100 || dy < -100) continue;
+        d = Math.sqrt(dx * dx + dy * dy);
+        if (d < 100) {
+          al = (1 - d / 100) * 0.16;
+          ctx.strokeStyle = 'rgba(' + colors.base + ',' + al.toFixed(3) + ')';
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+        }
+      }
+    }
+    for (i = 0; i < parts.length; i++) {
+      a = parts[i];
+      al = a.life >= 0 ? 0.8 * a.life : (a.acc ? 0.85 : 0.5);
+      ctx.fillStyle = 'rgba(' + mix(a.acc ? colors.acc : colors.base, a.tint) + ',' + (a.tint > 0 ? Math.max(al, 0.9 * (a.life >= 0 ? a.life : 1) * a.tint) : al).toFixed(3) + ')';
+      ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, 6.2832); ctx.fill();
+    }
+    for (i = 0; i < ripples.length; i++) {
+      ctx.strokeStyle = 'rgba(' + colors.blue.join(',') + ',' + (ripples[i].a * 0.55).toFixed(3) + ')';
+      ctx.beginPath(); ctx.arc(ripples[i].x, ripples[i].y, ripples[i].r, 0, 6.2832); ctx.stroke();
+    }
+  }
+
+  function loop() {
+    step(); draw();
+    requestAnimationFrame(loop);
+  }
+
+  window.addEventListener('pointermove', function (e) { ptr.x = e.clientX; ptr.y = e.clientY; });
+  document.addEventListener('pointerleave', function () { ptr.x = ptr.y = -9999; });
+
+  window.addEventListener('pointerdown', function (e) {
+    if (e.target.closest && e.target.closest('a, button')) return;
+    var x = e.clientX, y = e.clientY, i, p, dx, dy, d, f;
+    for (i = 0; i < parts.length; i++) {
+      p = parts[i];
+      dx = p.x - x; dy = p.y - y;
+      d = Math.sqrt(dx * dx + dy * dy);
+      if (d < 220 && d > 0.1) {
+        f = (1 - d / 220) * 5;
+        p.vx += (dx / d) * f;
+        p.vy += (dy / d) * f;
+        if (p.life < 0) p.tint = 1;
+      }
+    }
+    var burstCount = parts.filter(function (q) { return q.life >= 0; }).length;
+    for (i = 0; i < 7 && burstCount + i < 60; i++) parts.push(make(x, y, true));
+    ripples.push({ x: x, y: y, r: 0, a: 1 });
+    if (hint) hint.classList.add('gone');
+    if (reduce) draw();
+  });
+
+  window.addEventListener('resize', resize);
+  var mq = window.matchMedia('(prefers-color-scheme: light)');
+  if (mq.addEventListener) mq.addEventListener('change', readColors);
+  new MutationObserver(readColors).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+  readColors();
+  resize();
+  if (reduce) draw(); else requestAnimationFrame(loop);
+
+  // Copy email
+  var btn = document.getElementById('copy');
+  var addr = document.getElementById('addr');
+  var tag = document.getElementById('tag');
+  btn.addEventListener('click', function () {
+    if (!addr.hidden) { addr.hidden = true; tag.hidden = true; return; }
+    addr.hidden = false; tag.hidden = false;
+    function done() { tag.textContent = 'copied'; setTimeout(function () { tag.textContent = 'copy'; }, 1600); }
+    function fallback() {
+      var r = document.createRange(); r.selectNodeContents(addr);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      tag.textContent = 'selected';
+      setTimeout(function () { tag.textContent = 'copy'; }, 1600);
+    }
+    try {
+      navigator.clipboard.writeText(addr.textContent).then(done, fallback);
+    } catch (err) { fallback(); }
+  });
+})();
+</script>
+</body>
+</html>
