@@ -303,3 +303,10 @@ footer {
 .btn:hover { border-color: var(--accent); }
 .back { font-family: var(--mono); font-size: 0.8125rem; color: var(--muted); text-decoration: none; }
 .back:hover { color: var(--fg); }
+
+/* Long-form article text */
+.body-text { display: flex; flex-direction: column; gap: 1.1rem; }
+.body-text h2 { margin: 1.25rem 0 0; font-family: var(--display); font-weight: 500; font-size: 1.375rem; letter-spacing: -0.01em; }
+.body-text ul, .body-text ol { margin: 0; padding-left: 1.25rem; }
+.body-text img { max-width: 100%; height: auto; border-radius: 4px; }
+.body-text:empty, .body-text:blank { display: none; }
