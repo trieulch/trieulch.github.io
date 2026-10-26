@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-label="Bar chart with a trend line">
+  <rect width="640" height="400" fill="#10151a"/>
+  <g stroke="#1d242b" stroke-width="1">
+    <path d="M60 80H600M60 150H600M60 220H600M60 290H600"/>
+  </g>
+  <g>
+    <rect x="90"  y="240" width="52" height="60"  rx="3" fill="#8cc8ff" opacity=".55"/>
+    <rect x="170" y="200" width="52" height="100" rx="3" fill="#8cc8ff" opacity=".55"/>
+    <rect x="250" y="220" width="52" height="80"  rx="3" fill="#8cc8ff" opacity=".55"/>
+    <rect x="330" y="150" width="52" height="150" rx="3" fill="#8cc8ff" opacity=".7"/>
+    <rect x="410" y="120" width="52" height="180" rx="3" fill="#8cc8ff" opacity=".7"/>
+    <rect x="490" y="80"  width="52" height="220" rx="3" fill="#e3a857"/>
+  </g>
+  <path d="M116 225 L196 185 L276 205 L356 135 L436 105 L516 62" fill="none" stroke="#e7eaed" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <g fill="#e7eaed">
+    <circle cx="116" cy="225" r="5"/><circle cx="196" cy="185" r="5"/><circle cx="276" cy="205" r="5"/>
+    <circle cx="356" cy="135" r="5"/><circle cx="436" cy="105" r="5"/><circle cx="516" cy="62" r="5"/>
+  </g>
+  <path d="M60 300H600" stroke="#8a949d" stroke-width="2"/>
+</svg>

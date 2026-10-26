@@ -249,3 +249,57 @@ footer {
 .page-head p { margin: 0; color: var(--muted); max-width: 34rem; text-wrap: pretty; }
 .empty { color: var(--muted); font-size: 0.9375rem; margin: 0; }
 .rows.links-list .row { grid-template-columns: 8.5rem minmax(0, 1fr); }
+
+/* Article cards (Articles page) */
+.cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr));
+  gap: 1.75rem 1.25rem;
+}
+.card a { display: flex; flex-direction: column; gap: 0.75rem; text-decoration: none; }
+.card .thumb {
+  aspect-ratio: 16 / 10;
+  width: 100%;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--line);
+  transition: border-color 0.15s, transform 0.15s;
+}
+.card a:hover .thumb { border-color: var(--accent); transform: translateY(-2px); }
+.card h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.card .meta { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
+
+/* Article page */
+.article { display: flex; flex-direction: column; gap: 1.25rem; }
+.article h1 { font-size: clamp(2rem, 6.5vw, 2.75rem); line-height: 1.1; text-wrap: balance; }
+.article .meta { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); margin: 0; }
+.article .cover { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border: 1px solid var(--line); border-radius: 4px; }
+.article p { margin: 0; text-wrap: pretty; }
+.article .lede { font-size: 1.125rem; }
+.btn {
+  align-self: flex-start;
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  text-decoration: none;
+  color: var(--fg);
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  transition: border-color 0.15s;
+}
+.btn:hover { border-color: var(--accent); }
+.back { font-family: var(--mono); font-size: 0.8125rem; color: var(--muted); text-decoration: none; }
+.back:hover { color: var(--fg); }
