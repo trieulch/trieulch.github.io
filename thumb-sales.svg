@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 300" width="700" height="300" role="img" aria-label="Sales dashboard chart">
+  <rect width="700" height="300" fill="#10151a"/>
+  <g stroke="#1d242b" stroke-width="1">
+    <line x1="60" y1="60" x2="640" y2="60"/><line x1="60" y1="120" x2="640" y2="120"/>
+    <line x1="60" y1="180" x2="640" y2="180"/><line x1="60" y1="240" x2="640" y2="240"/>
+  </g>
+  <g fill="#8cc8ff">
+    <rect x="90" y="170" width="46" height="70" rx="2" opacity="0.7"/>
+    <rect x="165" y="140" width="46" height="100" rx="2" opacity="0.7"/>
+    <rect x="240" y="155" width="46" height="85" rx="2" opacity="0.7"/>
+    <rect x="315" y="105" width="46" height="135" rx="2" opacity="0.7"/>
+    <rect x="390" y="120" width="46" height="120" rx="2" opacity="0.7"/>
+    <rect x="465" y="80" width="46" height="160" rx="2" opacity="0.7"/>
+    <rect x="540" y="60" width="46" height="180" rx="2" opacity="0.7"/>
+  </g>
+  <polyline fill="none" stroke="#e3a857" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"
+    points="113,190 188,165 263,175 338,125 413,135 488,95 563,70"/>
+  <g fill="#e3a857"><circle cx="113" cy="190" r="4"/><circle cx="188" cy="165" r="4"/><circle cx="263" cy="175" r="4"/><circle cx="338" cy="125" r="4"/><circle cx="413" cy="135" r="4"/><circle cx="488" cy="95" r="4"/><circle cx="563" cy="70" r="4"/></g>
+</svg>

@@ -281,6 +281,8 @@ footer {
   text-wrap: balance;
 }
 .card .meta { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
+.card .blurb { margin: 0; font-size: 0.875rem; line-height: 1.5; color: var(--muted); text-wrap: pretty; }
+.card .blurb .stat { color: var(--fg); font-variant-numeric: tabular-nums; }
 
 /* Article page */
 .article { display: flex; flex-direction: column; gap: 1.25rem; }
