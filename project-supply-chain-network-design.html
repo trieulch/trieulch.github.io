@@ -36,6 +36,7 @@
     <p class="lede">Which plants should a company open, and how much should each ship? A linear programming model in Python, tested against uncertain demand with 1,000 Monte Carlo runs.</p>
 
 <h2 id="problem">The business problem</h2>
+<figure class="fig"><img alt="Business problem: 10 candidate plants in 5 countries supplying 5 markets" src="supply-chain-business-problem.png" loading="lazy"><figcaption>The setup: five countries can each host a small or large plant, and five markets need to be supplied. Fixed cost shown per month; demand in units per month.</figcaption></figure>
 <p>Imagine a company that sells in five markets: the United States, Brazil, Germany, India and Japan. It can put a factory in any of those countries, small (500,000 units a month) or large (1,500,000). Nothing is free, though. Every open plant costs a fixed amount each month, on top of what it costs to make each unit and to ship it, by container, to each market.</p>
 <p>Open everything and you waste money. Open too little and you either pay a fortune in freight or can't meet demand. So the question I wanted to answer is: <strong>which plants should be open, and how much should each send to each market, so that all demand is met at the lowest total monthly cost?</strong></p>
 <p>This is a classic <em>facility location</em> problem. It suits linear programming well, because both the cost and every limit can be written as straight sums of the quantities we control.</p>
