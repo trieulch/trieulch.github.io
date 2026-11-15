@@ -314,3 +314,10 @@ footer {
 .body-text img { max-width: 100%; height: auto; border-radius: 4px; }
 .body-text:empty, .body-text:blank { display: none; }
 .card .thumb { object-fit: cover; object-position: top; }
+.article .steps { padding-left: 1.25rem; line-height: 1.7; }
+.article .steps li { margin-bottom: 0.6rem; }
+.article h2 { margin-top: 2rem; }
+.article code { font-family: "JetBrains Mono", monospace; font-size: 0.9em; }
+.article .spec { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.95rem; }
+.article .spec th, .article .spec td { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.12); vertical-align: top; }
+.article .spec th { font-weight: 500; opacity: 0.8; }
