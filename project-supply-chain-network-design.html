@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Choosing which plants to open and where to ship, with linear programming in Python (PuLP) and a Monte Carlo test of demand uncertainty.">
+<title>Supply Chain Network Design · Trieu Le</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['$$','$$']]}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+
+<canvas id="field" aria-hidden="true"></canvas>
+
+<main class="wrap">
+  <nav class="site-nav" aria-label="Main">
+    <a class="brand" href="index.html">Home</a>
+    <ul>
+      <li><a href="projects.html" aria-current="page">Projects</a></li>
+      <li><a href="resume.html">Resume</a></li>
+      <li><a href="articles.html">Articles</a></li>
+    </ul>
+  </nav>
+
+  <article class="article">
+    <a class="back" href="projects.html">← Projects</a>
+    <h1>Supply Chain Network Design</h1>
+    <p class="meta">Python, PuLP · Monte Carlo · synthetic data</p>
+    <img class="cover" src="cover-supply-chain.jpg" alt="Optimal supply network: which country ships to which, with arrow width showing volume">
+    <p class="lede">Which plants should a company open, and how much should each ship? A linear programming model in Python, tested against uncertain demand with 1,000 Monte Carlo runs.</p>
+    <a class="btn" href="https://github.com/trieulch/Supply-Chain-Cost-Optimization-by-Monte-Carlo-and-PuLP-Python-" target="_blank" rel="noopener">View code on GitHub</a>
+
+<h2 id="problem">The business problem</h2>
+<p>Imagine a company that sells in five markets: the United States, Brazil, Germany, India and Japan. It can put a factory in any of those countries, small (500,000 units a month) or large (1,500,000). Nothing is free, though. Every open plant costs a fixed amount each month, on top of what it costs to make each unit and to ship it, by container, to each market.</p>
+<p>Open everything and you waste money. Open too little and you either pay a fortune in freight or can't meet demand. So the question I wanted to answer is: <strong>which plants should be open, and how much should each send to each market, so that all demand is met at the lowest total monthly cost?</strong></p>
+<p>This is a classic <em>facility location</em> problem. It suits linear programming well, because both the cost and every limit can be written as straight sums of the quantities we control.</p>
+
+<h2 id="data">The data</h2>
+<p class="note">Heads up: every number below is made up. I invented this data to practise the method, so don't read anything into the actual costs.</p>
+<p>One container holds 1,000 units. There are 10 candidate plants (5 countries, 2 sizes each):</p>
+<div class="tw"><table class="spec"><thead><tr><th>Plant</th><th>Country</th><th>Type</th><th>Fixed cost ($/month)</th><th>Variable cost ($/unit)</th><th>Capacity (units/month)</th></tr></thead><tbody><tr><td>UNI_LOW</td><td>United States</td><td>Low</td><td>1,000,000</td><td>14</td><td>500,000</td></tr><tr><td>UNI_HIGH</td><td>United States</td><td>High</td><td>2,800,000</td><td>14</td><td>1,500,000</td></tr><tr><td>BRA_LOW</td><td>Brazil</td><td>Low</td><td>650,000</td><td>9</td><td>500,000</td></tr><tr><td>BRA_HIGH</td><td>Brazil</td><td>High</td><td>1,800,000</td><td>9</td><td>1,500,000</td></tr><tr><td>GER_LOW</td><td>Germany</td><td>Low</td><td>900,000</td><td>13</td><td>500,000</td></tr><tr><td>GER_HIGH</td><td>Germany</td><td>High</td><td>2,500,000</td><td>13</td><td>1,500,000</td></tr><tr><td>IND_LOW</td><td>India</td><td>Low</td><td>450,000</td><td>6</td><td>500,000</td></tr><tr><td>IND_HIGH</td><td>India</td><td>High</td><td>1,300,000</td><td>6</td><td>1,500,000</td></tr><tr><td>JAP_LOW</td><td>Japan</td><td>Low</td><td>850,000</td><td>12</td><td>500,000</td></tr><tr><td>JAP_HIGH</td><td>Japan</td><td>High</td><td>2,400,000</td><td>12</td><td>1,500,000</td></tr></tbody></table></div>
+<p>Monthly demand per market:</p>
+<div class="tw"><table class="spec"><thead><tr><th>Market</th><th>Demand (units/month)</th></tr></thead><tbody><tr><td>United States</td><td>2,300,000</td></tr><tr><td>Brazil</td><td>800,000</td></tr><tr><td>Germany</td><td>600,000</td></tr><tr><td>India</td><td>1,200,000</td></tr><tr><td>Japan</td><td>500,000</td></tr></tbody></table></div>
+<p>And freight in $ per container, with the origin country down the side and the destination across the top:</p>
+<div class="tw"><table class="spec"><thead><tr><th>Origin \ Destination</th><th>United States</th><th>Brazil</th><th>Germany</th><th>India</th><th>Japan</th></tr></thead><tbody><tr><td>United States</td><td>250</td><td>1,100</td><td>1,200</td><td>1,700</td><td>1,300</td></tr><tr><td>Brazil</td><td>1,050</td><td>250</td><td>1,400</td><td>1,900</td><td>2,000</td></tr><tr><td>Germany</td><td>1,150</td><td>1,300</td><td>250</td><td>1,100</td><td>1,231</td></tr><tr><td>India</td><td>1,650</td><td>1,900</td><td>1,100</td><td>250</td><td>850</td></tr><tr><td>Japan</td><td>1,300</td><td>2,100</td><td>1,250</td><td>900</td><td>250</td></tr></tbody></table></div>
+
+<h2 id="model">The mathematical model</h2>
+<p>Any linear program boils down to three things: what you decide (variables), what you want to minimise or maximise (the objective), and the rules you have to respect (constraints). Here they are:</p>
+<h3>Decision variables</h3>
+<ul><li>\(y_p \in \{0,1\}\): equals 1 if plant \(p\) is opened.</li><li>\(x_{pm} \ge 0\): units shipped from plant \(p\) to market \(m\).</li></ul>
+<h3>The objective: lowest total monthly cost</h3>
+$$\min \; \sum_p F_p\,y_p \;+\; \sum_p\sum_m \Big(V_p + \frac{S_{pm}}{U}\Big)\,x_{pm}$$
+<p>Here \(F_p\) is the fixed cost, \(V_p\) the production cost per unit, \(S_{pm}\) the freight per container and \(U = 1000\) units per container. Dividing freight by \(U\) just turns it into a cost per unit, so everything is measured per unit.</p>
+<h3>Constraints</h3>
+$$\sum_p x_{pm} \ge D_m \quad \forall m \qquad \text{(every market's demand is met)}$$
+$$\sum_m x_{pm} \le \mathrm{Cap}_p\,y_p \quad \forall p \qquad \text{(capacity, and only open plants can ship)}$$
+<p>The second rule is the one that does the real work. If \(y_p=0\), the right-hand side is zero, so a closed plant can't ship anything. If \(y_p=1\), the plant can ship up to its capacity.</p>
+<p>Because some variables are yes/no (open or closed), this is technically a <em>mixed-integer</em> linear program, or MILP. You don't have to try every combination by hand: the solver prunes the bad options for you.</p>
+<h3>A tiny example</h3>
+<p>Say demand is 400,000 units. Plant A has a fixed cost of 100,000, production of 10 and freight of 1 per unit. Plant B has 300,000, 8 and 2. Using only A costs 100,000 + 400,000 × 11 = 4.5M. Using only B costs 300,000 + 400,000 × 10 = 4.3M. B wins even with the higher fixed cost, because each unit is cheaper. The solver makes this same trade-off across 10 plants and 5 markets at once.</p>
+
+<h2 id="code">The Python code</h2>
+<p>In plain steps, the whole thing looks like this:</p>
+<pre><code>load plants, markets, freight
+create a yes/no variable per plant, and a flow variable per plant and market
+objective: minimise fixed costs of open plants + (production + freight per unit) x flows
+rule 1: for each market, total received >= demand
+rule 2: for each plant, total shipped <= capacity x (1 if open, else 0)
+solve, then read which plants are open and what each one ships</code></pre>
+<p>The code mirrors the maths: declare the variables, write the objective, add the constraints, solve. I used PuLP (version 3.x) and read the three CSV files from above.</p>
+<pre><code>from pathlib import Path
+import pandas as pd
+import pulp
+
+ROOT = Path(__file__).resolve().parents[1]
+UNITS_PER_CONTAINER = 1000
+
+plants = pd.read_csv(ROOT / &quot;data/plants.csv&quot;).set_index(&quot;plant_id&quot;)
+markets = pd.read_csv(ROOT / &quot;data/markets.csv&quot;).set_index(&quot;market&quot;)
+freight = pd.read_csv(ROOT / &quot;data/freight.csv&quot;, index_col=&quot;origin&quot;)
+
+# 1) model + variables
+model = pulp.LpProblem(&quot;network_design&quot;, pulp.LpMinimize)
+# (built with plain LpVariable(...) so it works across PuLP versions)
+y = {p: pulp.LpVariable(f&quot;open_{i}&quot;, cat=&quot;Binary&quot;)
+     for i, p in enumerate(plants.index)}
+x = {(p, m): pulp.LpVariable(f&quot;flow_{i}_{j}&quot;, lowBound=0)
+     for i, p in enumerate(plants.index)
+     for j, m in enumerate(markets.index)}
+
+# 2) objective: fixed + (variable + freight per unit) * flow
+model += (
+    pulp.lpSum(plants.loc[p, &quot;fixed_cost_usd_month&quot;] * y[p] for p in plants.index)
+    + pulp.lpSum(
+        (plants.loc[p, &quot;variable_cost_usd_unit&quot;]
+         + freight.loc[plants.loc[p, &quot;country&quot;], m] / UNITS_PER_CONTAINER) * x[(p, m)]
+        for p in plants.index for m in markets.index)
+)
+
+# 3) constraints
+for m in markets.index:   # demand
+    model += pulp.lpSum(x[(p, m)] for p in plants.index) &gt;= markets.loc[m, &quot;demand_units_month&quot;]
+for p in plants.index:    # capacity, only if open
+    model += (pulp.lpSum(x[(p, m)] for m in markets.index)
+              &lt;= plants.loc[p, &quot;capacity_units_month&quot;] * y[p])
+
+# 4) solve + read results
+model.solve(pulp.PULP_CBC_CMD(msg=False))
+print(&quot;status:&quot;, pulp.LpStatus[model.status])
+print(&quot;total cost:&quot;, round(pulp.value(model.objective)))
+print(&quot;open plants:&quot;, [p for p in plants.index if y[p].value() &gt; 0.5])</code></pre>
+<p>To run it, install the packages with <code>pip install "pulp&lt;4" pandas</code> and run <code>python src/network_design_pulp.py</code>. You should see <code>status: Optimal</code> and <code>total cost: 57445000</code>. One note: PuLP 4 changed how variables are created, so this version needs PuLP 3.x. The same script also runs the what-if scenarios in the next sections.</p>
+
+<h2 id="results">The optimal network</h2>
+<p>The solver opens five of the ten plants, for a total of <strong>$57.4 million a month</strong>: both plants in Brazil, both in India, and the large one in Japan. Nothing gets built in the US or Germany, even though the US is the biggest market. Here are the flows in units per month:</p>
+<div class="tw"><table class="spec"><thead><tr><th>Plant</th><th>United States</th><th>Brazil</th><th>Germany</th><th>India</th><th>Japan</th></tr></thead><tbody><tr><td>BRA_LOW</td><td>500,000</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>BRA_HIGH</td><td>700,000</td><td>800,000</td><td>0</td><td>0</td><td>0</td></tr><tr><td>IND_LOW</td><td>200,000</td><td>0</td><td>0</td><td>300,000</td><td>0</td></tr><tr><td>IND_HIGH</td><td>0</td><td>0</td><td>600,000</td><td>900,000</td><td>0</td></tr><tr><td>JAP_HIGH</td><td>900,000</td><td>0</td><td>0</td><td>0</td><td>500,000</td></tr></tbody></table></div>
+<figure class="fig"><img alt="Optimal network: which country ships to which" src="supply-chain-network.png" loading="lazy"><figcaption>Base case. Green countries have open plants, red ones have none and import everything. Arrow width is proportional to the volume shipped.</figcaption></figure>
+<p>It makes sense once you look at the table. Production sits where it's cheap (Brazil and India), and Japan's large plant sends most of its output to the US. Brazil covers its own market and ships the rest north, and India supplies itself and Germany.</p>
+
+<h2 id="scenarios">What-if scenarios</h2>
+<p>The nice thing about having a model is that you can change an assumption and re-solve in seconds. I tried three scenarios:</p>
+<svg viewBox='0 0 780 150' role='img' aria-label='Total monthly cost by scenario' class='chart'><text x='0' y='24' class='bl'>Base case</text><rect x='210' y='10' width='337' height='24' rx='3' class='bar0'/><text x='555' y='27' class='bv'>$57.4M</text><text x='0' y='70' class='bl'>Freight cost x5</text><rect x='210' y='56' width='420' height='24' rx='3' class='bar1'/><text x='638' y='73' class='bv'>$71.5M</text><text x='0' y='116' class='bl'>India High-capacity fixed cost x2</text><rect x='210' y='102' width='345' height='24' rx='3' class='bar2'/><text x='563' y='119' class='bv'>$58.7M</text></svg>
+<div class="tw"><table class="spec"><thead><tr><th>Scenario</th><th>Total cost / month</th><th>vs base</th><th>Plants opened</th></tr></thead><tbody><tr><td>Base case</td><td>$57,445,000</td><td>-</td><td>BRA_LOW, BRA_HIGH, IND_LOW, IND_HIGH, JAP_HIGH</td></tr><tr><td>Freight cost x5</td><td>$71,450,000</td><td>+24.4%</td><td>UNI_HIGH, BRA_LOW, BRA_HIGH, IND_LOW, IND_HIGH</td></tr><tr><td>India High-capacity fixed cost x2</td><td>$58,745,000</td><td>+2.3%</td><td>BRA_LOW, BRA_HIGH, IND_LOW, IND_HIGH, JAP_HIGH</td></tr></tbody></table></div>
+<h3>Freight cost x5</h3>
+<p>This mimics a shipping crisis. Total cost goes up by 24.4% and the network reshuffles: the Japanese plant closes and a large plant opens in the United States. When transport gets expensive, making things close to your biggest market beats making them cheaply far away.</p>
+<h3>India's large plant becomes twice as expensive to run</h3>
+<p>Cost goes up by only 2.3% and the network stays the same. That plant is still the cheapest way to serve India and Germany, so this decision doesn't depend much on that one number.</p>
+
+<h2 id="montecarlo">Monte Carlo: how robust is the network?</h2>
+<p>Everything so far assumes demand is known exactly, which is never true. To see how much that matters, I re-solved the model 1,000 times. Each time, I multiplied every market's demand by a random factor (normal distribution, mean 1, standard deviation 15%) and recorded which plants the solver chose to open.</p>
+<pre><code>for run in 1..1000:
+    demand_run = demand x random factor per market
+    solve the model with demand_run
+    record which plants are open and the total cost
+report: % of runs in which each plant is open</code></pre>
+<figure class="fig"><img alt="Monte Carlo results" src="supply-chain-montecarlo.png" loading="lazy"><figcaption>1,000 runs with 15% demand noise. Left: how often each plant is opened. Right: distribution of the total monthly cost.</figcaption></figure>
+<div class="tw"><table class="spec"><thead><tr><th>Plant</th><th>Open in % of runs</th></tr></thead><tbody>
+<tr><td>BRA_LOW, BRA_HIGH, IND_LOW, IND_HIGH</td><td>100%</td></tr><tr><td>JAP_HIGH</td><td>81.4%</td></tr><tr><td>JAP_LOW</td><td>58.6%</td></tr><tr><td>GER_LOW</td><td>23.2%</td></tr><tr><td>UNI_LOW</td><td>0.1%</td></tr><tr><td>UNI_HIGH, GER_HIGH</td><td>0%</td></tr></tbody></table></div>
+<p>The four plants in Brazil and India are open in every single run, so that part of the decision is solid. Japan's large plant is open most of the time. The small plants in Japan and Germany are the real "it depends" decisions: they only make sense when demand happens to land in the right place. The total monthly cost averages $57.5M, and 90% of runs fall between $47.0M and $67.9M.</p>
+<p>How many runs are enough? I ran 200 runs with two different random seeds and the percentages moved by only a few points, so 1,000 gives a steady picture.</p>
+
+<h3>PuLP versus Monte Carlo: what is the difference?</h3>
+<p>They are not rivals. PuLP is the tool that solves one planning problem. Monte Carlo is a way of using that tool again and again with random inputs, to see how far the answer can be trusted.</p>
+<div class="tw"><table class="spec"><thead><tr><th></th><th>PuLP (one solve)</th><th>Monte Carlo (1,000 solves)</th></tr></thead><tbody>
+<tr><td>What it is</td><td>A library that builds the model and calls a solver (CBC)</td><td>A simulation method that re-runs the model with random demand</td></tr>
+<tr><td>Question it answers</td><td>"With this demand, what is the cheapest network?"</td><td>"If demand moves around, which decisions still hold?"</td></tr>
+<tr><td>Demand used</td><td>One fixed set of numbers</td><td>1,000 random sets around the base (mean 1, standard deviation 15%)</td></tr>
+<tr><td>Number of solves</td><td>1</td><td>1,000</td></tr>
+<tr><td>Result</td><td>One answer: $57,445,000 per month, 5 plants open</td><td>A distribution: mean $57.5M (5th to 95th percentile $47.0M to $67.9M) and the % of runs in which each plant is open</td></tr>
+<tr><td>How certain is it?</td><td>Exact for the assumed demand, but says nothing about risk</td><td>Shows which decisions are solid (Brazil and India plants: 100% of runs) and which depend on demand (JAP_LOW 58.6%, GER_LOW 23.2%)</td></tr>
+<tr><td>Depends on</td><td>Nothing else</td><td>PuLP: the loop calls the same model every time</td></tr>
+<tr><td>Use it when</td><td>You need a quick answer or a named scenario such as freight x5</td><td>Real money is at stake and demand is uncertain</td></tr>
+</tbody></table></div>
+<p>In this project they work together: the Monte Carlo loop calls the same PuLP model that produced the base case. Their results are consistent. The base case costs $57.4M and the Monte Carlo average is $57.5M, a little higher. The five plants in the base case are the ones that the simulation opens most often. What the simulation adds is the range of possible costs, and the warning that the small plants in Japan and Germany are decisions that depend on how demand turns out.</p>
+
+<h2 id="takeaways">Takeaways and next steps</h2>
+<ul>
+<li>Once you write a planning question as variables, an objective and constraints, a few dozen lines of Python can answer it.</li>
+<li>The single optimal answer matters less than seeing how the network reacts when the assumptions change.</li>
+<li>A single optimal answer can be misleading. Monte Carlo shows which decisions hold up (Brazil and India) and which depend on how demand turns out (the small plants in Japan and Germany).</li>
+<li>After that, I'd like to wrap the model in a small web app or dashboard so anyone can change the assumptions without touching code.</li></ul>
+<a class="btn" href="https://github.com/trieulch/Supply-Chain-Cost-Optimization-by-Monte-Carlo-and-PuLP-Python-" target="_blank" rel="noopener">View code on GitHub</a>
+  </article>
+</main>
+
+<footer>© 2026 Le Chi Hoang Trieu</footer>
+
+<script src="field.js"></script>
+</body>
+</html>
