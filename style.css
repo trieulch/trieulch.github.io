@@ -313,3 +313,4 @@ footer {
 .body-text ul, .body-text ol { margin: 0; padding-left: 1.25rem; }
 .body-text img { max-width: 100%; height: auto; border-radius: 4px; }
 .body-text:empty, .body-text:blank { display: none; }
+.card .thumb { object-fit: cover; object-position: top; }
