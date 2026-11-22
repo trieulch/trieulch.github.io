@@ -327,3 +327,39 @@ h1, h2, h3 { text-wrap: balance; }
   .article figure.duo { grid-template-columns: minmax(0, 1fr); }
   .article figure.duo img { aspect-ratio: 3 / 2; }
 }
+
+/* ---------- Resume (two-column CV) ---------- */
+.cv { display: grid; grid-template-columns: minmax(0, 19rem) minmax(0, 1fr); gap: clamp(2rem, 5vw, 3.5rem); align-items: start; margin-top: 0.5rem; }
+.cv-side {
+  position: sticky; top: 96px;
+  background: var(--tile); border: 1px solid var(--rule-2); border-radius: 18px;
+  padding: 1.75rem 1.6rem;
+}
+.cv-side .eyebrow { margin: 0 0 0.75rem; }
+.cv-side h2 { margin: 0 0 1.1rem; font-family: var(--serif); font-weight: 400; font-size: 1.875rem; line-height: 1.15; letter-spacing: -0.015em; }
+.cv-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.9375rem; color: var(--ink-2); }
+.cv-group { margin-top: 1.4rem; padding-top: 1.25rem; border-top: 1px solid var(--rule); }
+.cv-group h3 { margin: 0 0 0.35rem; font-size: 0.9375rem; font-weight: 500; color: var(--ink); }
+.cv-group h3:not(:first-child) { margin-top: 1rem; }
+.cv-group p { margin: 0 0 0.3rem; font-size: 0.875rem; line-height: 1.55; color: var(--ink-2); }
+
+.cv-main { display: flex; flex-direction: column; }
+.job { padding: 0 0 2rem; margin-bottom: 2rem; border-bottom: 1px solid var(--rule); }
+.job:last-child { border-bottom: 0; margin-bottom: 0; }
+.job .when { margin: 0 0 0.35rem; font-size: 0.8125rem; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.job h2 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: clamp(1.625rem, 3.5vw, 2rem); line-height: 1.15; letter-spacing: -0.015em; }
+.job .org { margin: 0.4rem 0 1rem; font-size: 0.875rem; font-weight: 500; color: var(--brand); }
+.job .org a { text-decoration: none; border-bottom: 1px solid var(--rule); transition: border-color 0.15s; }
+.job .org a:hover { border-color: var(--brand); }
+.job > p:not(.when):not(.org):not(.tools) { margin: 0; font-size: 1rem; line-height: 1.75; color: var(--ink-2); max-width: 40rem; text-wrap: pretty; }
+.job .tools { margin: 1rem 0 0; font-size: 0.875rem; color: var(--ink-2); }
+.job .tools b { font-weight: 500; color: var(--ink); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .cv { animation: rise 0.6s ease both; animation-delay: 0.1s; }
+}
+@media (max-width: 52rem) {
+  .cv { grid-template-columns: minmax(0, 1fr); }
+  .cv-side { position: static; order: 2; }
+  .cv-main { order: 1; }
+}

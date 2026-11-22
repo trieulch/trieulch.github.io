@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Fraunces:opsz,wght@9..144,400;9..144,500&display=swap">
-<link rel="stylesheet" href="style.css?v=5">
+<link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
 
@@ -23,70 +23,84 @@
   </ul>
 </nav>
 
-<main class="read">
+<main class="shell">
   <header class="lib-head">
     <div>
-      <p class="eyebrow">Experience, skills &amp; education</p>
-      <h1>Resume</h1>
+      <p class="eyebrow">Experience &amp; skills</p>
+      <h1>From the shop floor<br><em>to global pipelines.</em></h1>
     </div>
   </header>
 
-  <section class="block" id="experience">
-    <h2>Experience</h2>
-    <ul class="rows">
-      <li class="row">
-        <div class="when">Mar/25 – present</div>
-        <div class="body">
-          <h3><a href="https://www.rosen-group.com/en" target="_blank" rel="noopener">ROSEN Group</a> <span class="role">- Data Analyst</span></h3>
-          <p>Cross-regional commercial pipeline analysis for 6+ stakeholders across APAC, ME, EU, NA and SA, with 20+ Excel formulas, SQL queries and Python scripts for analysis and automation.</p>
-        </div>
-      </li>
-      <li class="row">
-        <div class="when">Jan/24 – Feb/25</div>
-        <div class="body">
-          <h3><a href="https://www.stella.com.hk" target="_blank" rel="noopener">Stella International Holdings Limited</a> <span class="role">- Data Analyst</span></h3>
-          <p>Built Power BI dashboards for real-time shop floor monitoring and handled 100+ ad-hoc requests in Excel, Power Query and SQL.</p>
-        </div>
-      </li>
-      <li class="row">
-        <div class="when">Jun – Nov/23</div>
-        <div class="body">
-          <h3>Domestic Metal Fabrication <span class="role">- Business Analyst</span></h3>
-          <p>Supported through LEAN projects.</p>
-        </div>
-      </li>
-      <li class="row">
-        <div class="when">Jun – Aug/22</div>
-        <div class="body">
-          <h3><a href="https://www.bcfiber.com/" target="_blank" rel="noopener">Vietfiber</a> <span class="role">- Industrial Engineer Intern</span></h3>
-          <p>Manufacturing cost analysis and process improvement.</p>
-        </div>
-      </li>
-    </ul>
-  </section>
+  <div class="cv">
+    <aside class="cv-side" aria-label="Skills and education">
+      <p class="eyebrow">What I bring</p>
+      <h2>Data in.<br>Decisions out.</h2>
+      <ul class="cv-list">
+        <li>Statistical analysis &amp; forecasting</li>
+        <li>Hypothesis testing</li>
+        <li>Power BI dashboards &amp; reporting</li>
+        <li>Automation with SQL &amp; Python</li>
+        <li>Cross-regional stakeholder support</li>
+      </ul>
 
-  <section class="block" id="skills">
-    <h2>Skills</h2>
-    <dl class="facts">
-      <dt>Tools</dt><dd>SQL, Python, Power BI, DAX, Looker, Power Query (M), Excel</dd>
-      <dt>Cloud</dt><dd>Azure, Google Cloud Platform</dd>
-      <dt>Certified</dt><dd>Microsoft Power BI Data Analyst, Data Engineer on Microsoft Azure, Advanced SQL for E-commerce (Udemy)</dd>
-      <dt>Languages</dt><dd>Vietnamese (native), English (full professional, TOEIC 860)</dd>
-    </dl>
-  </section>
+      <div class="cv-group" id="skills">
+        <h3>Tools</h3>
+        <p>SQL, Python, Power BI, DAX, Looker, Power Query (M), Excel</p>
+        <h3>Cloud</h3>
+        <p>Azure, Google Cloud Platform</p>
+      </div>
 
-  <section class="block" id="education">
-    <h2>Education</h2>
-    <ul class="rows">
-      <li class="row">
-        <div class="when">Cohort 2019</div>
-        <div class="body">
-          <h3>Ho Chi Minh City University of Technology</h3>
-          <p>BSc Logistics and Supply Chain Management</p>
-        </div>
-      </li>
-    </ul>
-  </section>
+      <div class="cv-group" id="education">
+        <h3>Education</h3>
+        <p>BSc Logistics and Supply Chain Management · Ho Chi Minh City University of Technology, cohort 2019</p>
+      </div>
+
+      <div class="cv-group">
+        <h3>Certifications</h3>
+        <p>Microsoft Power BI Data Analyst</p>
+        <p>Data Engineer on Microsoft Azure</p>
+        <p>Advanced SQL for E-commerce (Udemy)</p>
+      </div>
+
+      <div class="cv-group">
+        <h3>Languages</h3>
+        <p>Vietnamese (native)</p>
+        <p>English (full professional, TOEIC 860)</p>
+      </div>
+    </aside>
+
+    <section class="cv-main" id="experience" aria-label="Experience">
+      <article class="job">
+        <p class="when">Mar/25 – present</p>
+        <h2>Data Analyst</h2>
+        <p class="org"><a href="https://www.rosen-group.com/en" target="_blank" rel="noopener">ROSEN Group</a></p>
+        <p>Cross-regional commercial pipeline analysis for 6+ stakeholders across APAC, ME, EU, NA and SA, with 20+ Excel formulas, SQL queries and Python scripts for analysis and automation.</p>
+        <p class="tools"><b>Tools:</b> Excel · SQL · Python</p>
+      </article>
+
+      <article class="job">
+        <p class="when">Jan/24 – Feb/25</p>
+        <h2>Data Analyst</h2>
+        <p class="org"><a href="https://www.stella.com.hk" target="_blank" rel="noopener">Stella International Holdings Limited</a></p>
+        <p>Built Power BI dashboards for real-time shop floor monitoring and handled 100+ ad-hoc requests in Excel, Power Query and SQL.</p>
+        <p class="tools"><b>Tools:</b> Power BI · Excel · Power Query · SQL</p>
+      </article>
+
+      <article class="job">
+        <p class="when">Jun – Nov/23</p>
+        <h2>Business Analyst</h2>
+        <p class="org">Domestic Metal Fabrication</p>
+        <p>Supported through LEAN projects.</p>
+      </article>
+
+      <article class="job">
+        <p class="when">Jun – Aug/22</p>
+        <h2>Industrial Engineer Intern</h2>
+        <p class="org"><a href="https://www.bcfiber.com/" target="_blank" rel="noopener">Vietfiber</a></p>
+        <p>Manufacturing cost analysis and process improvement.</p>
+      </article>
+    </section>
+  </div>
 </main>
 
 <footer class="site-foot">© 2026 Le Chi Hoang Trieu</footer>
