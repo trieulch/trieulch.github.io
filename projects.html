@@ -9,67 +9,135 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Fraunces:opsz,wght@9..144,400;9..144,500&display=swap">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<canvas id="field" aria-hidden="true"></canvas>
+<nav class="pill-nav" aria-label="Main">
+  <a class="brand" href="index.html">Trieu Le</a>
+  <ul>
+    <li><a href="projects.html" aria-current="page">Projects</a></li>
+    <li><a href="resume.html">Resume</a></li>
+    <li><a href="stories.html">Stories</a></li>
+  </ul>
+</nav>
 
-<main class="wrap">
-  <nav class="site-nav" aria-label="Main">
-    <a class="brand" href="index.html">Home</a>
-    <ul>
-      <li><a href="projects.html" aria-current="page">Projects</a></li>
-      <li><a href="resume.html">Resume</a></li>
-      <li><a href="stories.html">Stories</a></li>
-    </ul>
-  </nav>
-
-  <header class="page-head">
-    <h1>Projects</h1>
+<main class="shell">
+  <header class="lib-head">
+    <div>
+      <p class="eyebrow">Selected projects</p>
+      <h1>Real data.<br><em>Clear decisions.</em></h1>
+    </div>
+    <p class="intro">Analysis, dashboards and optimization models. Each card shows the tools used and the result.</p>
   </header>
 
-  <section id="work">
-    <ul class="cards">
-      <li class="card">
-        <a href="https://github.com/trieulch/E-commerce-Analysis" target="_blank" rel="noopener">
-          <img class="thumb" src="thumb-ecommerce.jpg" alt="" width="700" height="300">
-          <h3>E-commerce Performance Analysis</h3>
-          <span class="meta">Python, mySQL · ~1.2M records</span>
-          <p class="blurb">Checkout conversion up <span class="stat">16.97%</span>, average order value up <span class="stat">5.5%</span>.</p>
-        </a>
-      </li>
-      <li class="card">
-        <a href="https://app.powerbi.com/view?r=eyJrIjoiNDQ0MTI1OGQtYzJjNC00NGEwLWFmNGUtZjg3YzJiZjU5ZDQ1IiwidCI6ImNiNDg0NDZlLTkwZTYtNGJmMS04MjViLTQwZTQ4ZmNjOWZmNiJ9" target="_blank" rel="noopener">
-          <img class="thumb" src="thumb-sales.jpg" alt="" width="700" height="300">
-          <h3>Sales &amp; Products Dashboard</h3>
-          <span class="meta">Power BI · ~56k records</span>
-          <p class="blurb">Sales metrics, customer geography and product performance.</p>
-        </a>
-      </li>
-      <li class="card">
-        <a href="project-supply-chain-network-design.html">
-          <img class="thumb" src="thumb-supply-chain.jpg" alt="" width="700" height="300">
-          <h3>Supply Chain Network Design</h3>
-          <span class="meta">Python, PuLP · 1,000 Monte Carlo runs</span>
-          <p class="blurb">Which plants to open and where to ship, tested against uncertain demand: Brazil and India plants stay open in <span class="stat">100%</span> of runs.</p>
-        </a>
-      </li>
-      <li class="card">
-        <a href="https://raw.githubusercontent.com/trieulch/trieulch.github.io_old/refs/heads/main/images/1740379623029.jpg" target="_blank" rel="noopener">
-          <img class="thumb" src="thumb-manufacturing.jpg" alt="" width="700" height="300">
-          <h3>Manufacturing Analytics Dashboard</h3>
-          <span class="meta">Power BI(only image) · 200+ workers</span>
-          <p class="blurb">Automated KPI reporting that lifted line efficiency by <span class="stat">15%</span>.</p>
-        </a>
-      </li>
-    </ul>
-  </section>
+  <ul class="chips" aria-label="Filter by category">
+    <li><button class="chip" type="button" data-cat="all" aria-pressed="true">All work<span class="n"></span></button></li>
+    <li><button class="chip" type="button" data-cat="Data Analysis" aria-pressed="false">Data Analysis<span class="n"></span></button></li>
+    <li><button class="chip" type="button" data-cat="Dashboards" aria-pressed="false">Dashboards<span class="n"></span></button></li>
+    <li><button class="chip" type="button" data-cat="Optimization" aria-pressed="false">Optimization<span class="n"></span></button></li>
+  </ul>
+
+  <div class="find">
+    <div>
+      <label for="q">Find a project</label>
+      <input id="q" type="search" placeholder="Search projects, tools, or topics" autocomplete="off">
+    </div>
+    <p class="count" id="count" aria-live="polite"></p>
+  </div>
+
+  <ul class="grid" id="grid">
+    <li class="pcard" data-cat="Data Analysis" style="--i:0">
+      <a href="https://github.com/trieulch/E-commerce-Analysis" target="_blank" rel="noopener">
+        <div class="media"><img src="thumb-ecommerce.jpg" alt="" width="700" height="300" loading="lazy"></div>
+        <div class="body">
+          <p class="cat">Data Analysis</p>
+          <h2>E-commerce Performance Analysis</h2>
+          <p class="desc">Checkout conversion up <b>16.97%</b>, average order value up <b>5.5%</b>.</p>
+          <ul class="tags"><li>Python</li><li>MySQL</li></ul>
+          <div class="foot"><span class="note">~1.2M records · Code on GitHub</span><span class="go">Explore</span></div>
+        </div>
+      </a>
+    </li>
+    <li class="pcard" data-cat="Dashboards" style="--i:1">
+      <a href="https://app.powerbi.com/view?r=eyJrIjoiNDQ0MTI1OGQtYzJjNC00NGEwLWFmNGUtZjg3YzJiZjU5ZDQ1IiwidCI6ImNiNDg0NDZlLTkwZTYtNGJmMS04MjViLTQwZTQ4ZmNjOWZmNiJ9" target="_blank" rel="noopener">
+        <div class="media"><img src="thumb-sales.jpg" alt="" width="700" height="300" loading="lazy"></div>
+        <div class="body">
+          <p class="cat">Dashboards</p>
+          <h2>Sales &amp; Products Dashboard</h2>
+          <p class="desc">Sales metrics, customer geography and product performance.</p>
+          <ul class="tags"><li>Power BI</li></ul>
+          <div class="foot"><span class="note">~56k records · Live Power BI report</span><span class="go">Explore</span></div>
+        </div>
+      </a>
+    </li>
+    <li class="pcard" data-cat="Optimization" style="--i:2">
+      <a href="project-supply-chain-network-design.html">
+        <div class="media"><img src="thumb-supply-chain.jpg" alt="" width="700" height="300" loading="lazy"></div>
+        <div class="body">
+          <p class="cat">Optimization</p>
+          <h2>Supply Chain Network Design</h2>
+          <p class="desc">Which plants to open and where to ship, tested against uncertain demand: Brazil and India plants stay open in <b>100%</b> of runs.</p>
+          <ul class="tags"><li>Python</li><li>PuLP</li><li>Monte Carlo</li></ul>
+          <div class="foot"><span class="note">1,000 Monte Carlo runs · Full write-up</span><span class="go">Explore</span></div>
+        </div>
+      </a>
+    </li>
+    <li class="pcard" data-cat="Dashboards" style="--i:3">
+      <a href="https://raw.githubusercontent.com/trieulch/trieulch.github.io_old/refs/heads/main/images/1740379623029.jpg" target="_blank" rel="noopener">
+        <div class="media"><img src="thumb-manufacturing.jpg" alt="" width="700" height="300" loading="lazy"></div>
+        <div class="body">
+          <p class="cat">Dashboards</p>
+          <h2>Manufacturing Analytics Dashboard</h2>
+          <p class="desc">Automated KPI reporting that lifted line efficiency by <b>15%</b>.</p>
+          <ul class="tags"><li>Power BI</li></ul>
+          <div class="foot"><span class="note">200+ workers · Screenshot only</span><span class="go">Explore</span></div>
+        </div>
+      </a>
+    </li>
+  </ul>
+  <p class="none" id="none" hidden>No projects match that search.</p>
 </main>
 
-<footer>© 2026 Le Chi Hoang Trieu</footer>
+<footer class="site-foot">© 2026 Le Chi Hoang Trieu</footer>
 
-<script src="field.js"></script>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.pcard'));
+  var chips = Array.prototype.slice.call(document.querySelectorAll('.chip'));
+  var q = document.getElementById('q');
+  var count = document.getElementById('count');
+  var none = document.getElementById('none');
+  var cat = 'all';
+
+  chips.forEach(function (c) {
+    var k = c.getAttribute('data-cat');
+    var n = k === 'all' ? cards.length : cards.filter(function (x) { return x.getAttribute('data-cat') === k; }).length;
+    c.querySelector('.n').textContent = n;
+    c.addEventListener('click', function () {
+      cat = k;
+      chips.forEach(function (o) { o.setAttribute('aria-pressed', o === c ? 'true' : 'false'); });
+      apply();
+    });
+  });
+
+  function apply() {
+    var term = q.value.trim().toLowerCase();
+    var shown = 0;
+    cards.forEach(function (x) {
+      var okCat = cat === 'all' || x.getAttribute('data-cat') === cat;
+      var okText = !term || x.textContent.toLowerCase().indexOf(term) !== -1;
+      x.hidden = !(okCat && okText);
+      if (!x.hidden) shown++;
+    });
+    count.textContent = shown + (shown === 1 ? ' project' : ' projects');
+    none.hidden = shown !== 0;
+  }
+
+  q.addEventListener('input', apply);
+  apply();
+})();
+</script>
 </body>
 </html>

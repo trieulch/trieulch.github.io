@@ -9,25 +9,23 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Fraunces:opsz,wght@9..144,400;9..144,500&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="style.css">
 <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['$$','$$']]}};</script>
 <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 </head>
 <body>
 
-<canvas id="field" aria-hidden="true"></canvas>
+<nav class="pill-nav" aria-label="Main">
+  <a class="brand" href="index.html">Trieu Le</a>
+  <ul>
+    <li><a href="projects.html" aria-current="page">Projects</a></li>
+    <li><a href="resume.html">Resume</a></li>
+    <li><a href="stories.html">Stories</a></li>
+  </ul>
+</nav>
 
-<main class="wrap">
-  <nav class="site-nav" aria-label="Main">
-    <a class="brand" href="index.html">Home</a>
-    <ul>
-      <li><a href="projects.html" aria-current="page">Projects</a></li>
-      <li><a href="resume.html">Resume</a></li>
-      <li><a href="stories.html">Stories</a></li>
-    </ul>
-  </nav>
-
+<main class="read">
   <article class="article">
     <a class="back" href="projects.html">← Projects</a>
     <h1>Supply Chain Network Design</h1>
@@ -168,8 +166,7 @@ report: % of runs in which each plant is open</code></pre>
   </article>
 </main>
 
-<footer>© 2026 Le Chi Hoang Trieu</footer>
+<footer class="site-foot">© 2026 Le Chi Hoang Trieu</footer>
 
-<script src="field.js"></script>
 </body>
 </html>
