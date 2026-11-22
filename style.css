@@ -367,3 +367,8 @@ h1, h2, h3 { text-wrap: balance; }
 .job .wins li { font-size: 1rem; line-height: 1.7; color: var(--ink-2); text-wrap: pretty; }
 .job .wins li::marker { color: var(--brand-2); }
 .job .wins b { font-weight: 500; color: var(--ink); }
+.article figure.single { max-width: 32rem; }
+.job .award { margin: 0.9rem 0 0; font-size: 0.875rem; color: var(--ink-2); }
+.job .award b { font-weight: 500; color: var(--brand); }
+.job .award a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule); transition: border-color 0.15s; }
+.job .award a:hover { border-color: var(--brand); }
