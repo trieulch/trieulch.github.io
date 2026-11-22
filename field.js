@@ -4,7 +4,7 @@
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var W = 0, H = 0, dpr = 1;
   var parts = [], ripples = [];
-  var colors = { base: [190, 205, 215], acc: [227, 168, 87], blue: [140, 200, 255] };
+  var colors = { base: [40, 55, 70], acc: [156, 90, 14], blue: [30, 120, 210] };
 
   function rgbArr(str, fallback) {
     var a = str.split(',').map(function (n) { return parseFloat(n); });

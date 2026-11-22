@@ -1,41 +1,18 @@
 /* Layout: one calm left-aligned column over a full-viewport particle field.
    Hero is the name, a two-line bio and links; work, experience and skills follow as plain lists. */
 :root {
-  --bg: #0a0c0f;
-  --fg: #e7eaed;
-  --muted: #8a949d;
-  --line: #1d242b;
-  --accent: #e3a857;
-  --particle-rgb: 190, 205, 215;
-  --accent-rgb: 227, 168, 87;
-  --blue-rgb: 140, 200, 255;
-  --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
-  --body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  color-scheme: dark;
-}
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) {
-    --bg: #f5f6f7;
-    --fg: #12161a;
-    --muted: #59636c;
-    --line: #dce0e4;
-    --accent: #9c5a0e;
-    --particle-rgb: 40, 55, 70;
-    --accent-rgb: 156, 90, 14;
-    --blue-rgb: 30, 120, 210;
-    color-scheme: light;
-  }
-}
-:root[data-theme="light"] {
-  --bg: #f5f6f7;
+  /* Single light theme: white background with dark text */
+  --bg: #ffffff;
   --fg: #12161a;
   --muted: #59636c;
-  --line: #dce0e4;
+  --line: #e2e6ea;
   --accent: #9c5a0e;
   --particle-rgb: 40, 55, 70;
   --accent-rgb: 156, 90, 14;
   --blue-rgb: 30, 120, 210;
+  --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   color-scheme: light;
 }
 
@@ -319,7 +296,7 @@ footer {
 .article h2 { margin-top: 2rem; }
 .article code { font-family: "JetBrains Mono", monospace; font-size: 0.9em; }
 .article .spec { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.95rem; }
-.article .spec th, .article .spec td { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.12); vertical-align: top; }
+.article .spec th, .article .spec td { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--line); vertical-align: top; }
 .article .spec th { font-weight: 500; opacity: 0.8; }
 
 /* Project write-up extras (code blocks, figures, notes, charts) */
