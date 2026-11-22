@@ -363,3 +363,7 @@ h1, h2, h3 { text-wrap: balance; }
   .cv-side { position: static; order: 2; }
   .cv-main { order: 1; }
 }
+.job .wins { margin: 0; padding-left: 1.15rem; display: flex; flex-direction: column; gap: 0.7rem; max-width: 42rem; }
+.job .wins li { font-size: 1rem; line-height: 1.7; color: var(--ink-2); text-wrap: pretty; }
+.job .wins li::marker { color: var(--brand-2); }
+.job .wins b { font-weight: 500; color: var(--ink); }
