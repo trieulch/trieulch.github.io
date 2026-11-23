@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="An end-to-end SQL analysis of an online toy store: traffic, landing page and checkout tests, channels, seasonality, products and returning customers.">
+<title>E-commerce Performance Analysis · Trieu Le</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Fraunces:opsz,wght@9..144,400;9..144,500&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css?v=9">
+</head>
+<body>
+
+<nav class="pill-nav" aria-label="Main">
+  <a class="brand" href="index.html">Trieu Le</a>
+  <ul>
+    <li><a href="projects.html" aria-current="page">Projects</a></li>
+    <li><a href="resume.html">Resume</a></li>
+    <li><a href="stories.html">Stories</a></li>
+  </ul>
+</nav>
+
+<main class="read">
+  <article class="article">
+    <a class="back" href="projects.html">← Projects</a>
+    <h1>E-commerce Performance Analysis</h1>
+    <p class="meta">MySQL, Python · A/B testing · 500K+ sessions, 1.3M+ pageviews</p>
+    <p class="lede">Where does an online store's traffic come from, where do visitors drop off, and which changes actually make money? An end-to-end SQL analysis of three years of website, order and refund data.</p>
+
+<h2 id="problem">The business problem</h2>
+<p>The company is a young online toy store. It launched with one product, Mr. Fuzzy, and added three more over the next two years. Almost all of its visitors arrive through paid search ads, so every session costs money.</p>
+<p>Marketing, the website team and management each had their own questions. Which ads are worth paying for? Why do so many visitors leave right away? Did the new pages and products help? Are customers coming back? So the question I wanted to answer is: <strong>where is the store losing visitors and money, and which changes win them back?</strong></p>
+<p>Each section below starts from one of those questions, answers it with SQL, and ends with what I would recommend.</p>
+
+<h2 id="data">The data</h2>
+<p class="note">Heads up: this is a public training dataset for an online store. The numbers are realistic but not from a real company, so treat the recommendations as practice.</p>
+<p>The data sits in a MySQL database with five tables:</p>
+<div class="tw"><table class="spec"><thead><tr><th>Table</th><th>What one row is</th><th>Size</th></tr></thead><tbody>
+<tr><td>website_sessions</td><td>One visit, with its traffic source, campaign and device</td><td>500K+ rows</td></tr>
+<tr><td>website_pageviews</td><td>One page seen during a visit</td><td>1.3M+ rows</td></tr>
+<tr><td>orders</td><td>One order, with its price and cost</td><td>~32K rows</td></tr>
+<tr><td>order_items</td><td>One product inside an order</td><td>~40K rows</td></tr>
+<tr><td>order_item_refunds</td><td>One refunded product</td><td>~1.7K rows</td></tr>
+</tbody></table></div>
+<p>A visitor who buys goes through the same pages every time:</p>
+<pre><code>/home (or a test landing page) → /products → /the-original-mr-fuzzy → /cart → /shipping → /billing → /thank-you</code></pre>
+<p>Two business rules shaped the analysis. Paid search costs about <strong>$2 per click</strong>, and marketing wants at least a <strong>4% conversion rate</strong> from session to order before it spends more on a campaign.</p>
+
+<h2 id="traffic">1. Traffic: which ads are worth paying for?</h2>
+<p>In the first months, the <strong>gsearch nonbrand</strong> campaign brought in <strong>97.4%</strong> of all traffic. The whole business depended on one campaign, so I checked whether it paid for itself. It converted at <strong>2.96%</strong>, below the 4% target, so marketing lowered its bids. Weekly sessions then fell by about <strong>42.5%</strong>, which showed how sensitive that traffic is to price.</p>
+<p>Splitting the same campaign by device told a sharper story:</p>
+<div class="tw"><table class="spec"><thead><tr><th>Device</th><th>Sessions</th><th>Orders</th><th>Conversion rate</th><th>Cost per order (CPA)</th></tr></thead><tbody>
+<tr><td>Desktop</td><td>3,911</td><td>146</td><td>3.73%</td><td>$53.62</td></tr>
+<tr><td>Mobile</td><td>2,492</td><td>24</td><td>0.96%</td><td>$208.33</td></tr>
+</tbody></table></div>
+<svg viewBox='0 0 780 104' role='img' aria-label='Cost per order by device' class='chart'><text x='0' y='24' class='bl'>Desktop CPA</text><rect x='210' y='10' width='106' height='24' rx='3' class='bar0'/><text x='324' y='27' class='bv'>$53.62</text><text x='0' y='70' class='bl'>Mobile CPA</text><rect x='210' y='56' width='412' height='24' rx='3' class='bar1'/><text x='630' y='73' class='bv'>$208.33</text></svg>
+<p>CPA is simply the click price divided by the conversion rate: $2 ÷ 3.73% ≈ $54. A desktop order costs about <strong>a quarter</strong> of a mobile one, so the recommendation was to move bid budget towards desktop rather than cut the campaign as a whole.</p>
+<pre><code>SELECT w_s.device_type,
+       COUNT(DISTINCT w_s.website_session_id) AS sessions,
+       COUNT(DISTINCT o.order_id) AS orders,
+       COUNT(DISTINCT o.order_id) / COUNT(DISTINCT w_s.website_session_id) AS conversion_rate
+FROM website_sessions w_s
+LEFT JOIN orders o ON w_s.website_session_id = o.website_session_id
+WHERE w_s.created_at &lt; '2012-05-11'
+  AND w_s.utm_source = 'gsearch' AND w_s.utm_campaign = 'nonbrand'
+GROUP BY 1;</code></pre>
+
+<h2 id="testing">2. Website: where do visitors drop off?</h2>
+<h3>The landing page test</h3>
+<p>Most visitors entered on the homepage, and <strong>59.2%</strong> of them left without clicking anything (they "bounced"). The website team built a new landing page, <code>/lander-1</code>, and split traffic between the two pages. Over the same period:</p>
+<div class="tw"><table class="spec"><thead><tr><th>Landing page</th><th>Sessions</th><th>Bounced</th><th>Bounce rate</th></tr></thead><tbody>
+<tr><td>/home</td><td>2,261</td><td>1,319</td><td>58.3%</td></tr>
+<tr><td>/lander-1</td><td>2,315</td><td>1,232</td><td>53.2%</td></tr>
+</tbody></table></div>
+<p>The new page kept about <strong>5 more visitors in every 100</strong>. After all paid traffic was moved to it, I estimated roughly <strong>200 extra orders</strong> over the following months, about 50 a month.</p>
+<h3>The conversion funnel</h3>
+<p>Next I followed every session through the checkout pages and measured how many people moved on at each step:</p>
+<svg viewBox='0 0 780 288' role='img' aria-label='Click-through rate at each funnel step' class='chart'><text x='0' y='24' class='bl'>Lander → products</text><rect x='210' y='10' width='233' height='24' rx='3' class='bar0'/><text x='451' y='27' class='bv'>43.1%</text><text x='0' y='70' class='bl'>Products → Mr. Fuzzy</text><rect x='210' y='56' width='398' height='24' rx='3' class='bar0'/><text x='616' y='73' class='bv'>73.7%</text><text x='0' y='116' class='bl'>Mr. Fuzzy → cart</text><rect x='210' y='102' width='245' height='24' rx='3' class='bar0'/><text x='463' y='119' class='bv'>45.4%</text><text x='0' y='162' class='bl'>Cart → shipping</text><rect x='210' y='148' width='345' height='24' rx='3' class='bar0'/><text x='563' y='165' class='bv'>64.0%</text><text x='0' y='208' class='bl'>Shipping → billing</text><rect x='210' y='194' width='471' height='24' rx='3' class='bar0'/><text x='689' y='211' class='bv'>87.3%</text><text x='0' y='254' class='bl'>Billing → order</text><rect x='210' y='240' width='232' height='24' rx='3' class='bar1'/><text x='450' y='257' class='bv'>43.0%</text></svg>
+<p>The billing page stood out. Visitors who reach it have already chosen a product and entered their address, yet <strong>57%</strong> of them gave up there. That made it the best place to test a change.</p>
+<h3>The billing page test</h3>
+<p>The team built <code>/billing-2</code> and showed it to half the visitors for about two months. To keep the test fair, I only counted sessions from the moment the new page went live:</p>
+<div class="tw"><table class="spec"><thead><tr><th>Billing page</th><th>Sessions</th><th>Orders</th><th>Billing → order</th><th>Revenue per billing session</th></tr></thead><tbody>
+<tr><td>/billing (old)</td><td>657</td><td>300</td><td>45.7%</td><td>$22.83</td></tr>
+<tr><td>/billing-2 (new)</td><td>654</td><td>410</td><td>62.7%</td><td>$31.34</td></tr>
+</tbody></table></div>
+<p>The new page converted <strong>17 percentage points</strong> better and earned <strong>37% more</strong> per billing session. That result supported rolling it out to every visitor.</p>
+<pre><code>SELECT pageview_url,
+       COUNT(website_session_id) AS sessions,
+       COUNT(order_id) AS orders,
+       COUNT(order_id) / COUNT(website_session_id) AS conversion_rate
+FROM (SELECT w_p.website_session_id, w_p.pageview_url, o.order_id
+      FROM website_pageviews w_p
+      LEFT JOIN orders o ON w_p.website_session_id = o.website_session_id
+      WHERE w_p.website_pageview_id &gt; 53550          -- first /billing-2 pageview
+        AND w_p.pageview_url IN ('/billing', '/billing-2')
+        AND w_p.created_at BETWEEN '2012-09-05' AND '2012-11-10') AS flagged
+GROUP BY pageview_url;</code></pre>
+
+<h2 id="channels">3. Channels: is the store less dependent on one ad?</h2>
+<p>A second search engine, <strong>bsearch</strong>, was added later. On every device, gsearch converted better:</p>
+<div class="tw"><table class="spec"><thead><tr><th>Source</th><th>Desktop</th><th>Mobile</th></tr></thead><tbody>
+<tr><td>gsearch</td><td>4.52%</td><td>1.28%</td></tr>
+<tr><td>bsearch</td><td>3.79%</td><td>0.77%</td></tr>
+</tbody></table></div>
+<p>So bsearch bids were lowered slightly, and its sessions dipped a little. More importantly, over time the share of traffic from <strong>brand searches, direct visits and organic search</strong> kept growing. Those visitors are free or cheap to bring in, which means customers were starting to look for the store by name.</p>
+
+<h2 id="seasonality">4. Seasonality: when do people buy?</h2>
+<figure class="fig"><img alt="Sessions by hour of day and day of week" src="https://raw.githubusercontent.com/trieulch/E-commerce-Analysis/main/Business%20Patterns%20and%20Seasonality%20Analysis/Heatmap_sesions_by_hour_day.png" loading="lazy"><figcaption>Average sessions by hour and weekday. Traffic is heaviest from 9 AM to 5 PM on weekdays, peaking around 11 AM to 4 PM on Tuesday to Thursday, and drops sharply at weekends.</figcaption></figure>
+<p>From one year to the next, sessions grew by <strong>94%</strong> and orders by <strong>157%</strong>, so the store was not just getting more visitors but turning more of them into buyers. Every year, traffic spiked in the weeks of <strong>Black Friday and Cyber Monday</strong>.</p>
+<p>Two practical points came out of this. Customer support should be fully staffed on weekday office hours and in late November. And because conversion only partly moves with traffic (R² = 0.44), more sessions alone do not guarantee more orders.</p>
+
+<h2 id="products">5. Products: did new launches help?</h2>
+<p>Over three years, conversion rose from <strong>3.0% to 7.7%</strong> and revenue per session from <strong>$1.52 to $4.93</strong>, more than three times as much. Part of that came from the product range:</p>
+<ul>
+<li><strong>New products.</strong> When the second product (Love Bear) launched, overall conversion and revenue per session went up, and it converted well through the funnel.</li>
+<li><strong>Cross-selling.</strong> Offering a second product on the cart page raised the products per order from 1.00 to 1.04, and average order value from <strong>$51.42 to $54.25</strong> (+5.5%).</li>
+<li><strong>A third product</strong> improved every key metric again.</li>
+</ul>
+<h3>A quality problem in the refunds</h3>
+<p>Mr. Fuzzy's refund rate usually stayed between 3% and 6%. In <strong>August and September 2014</strong> it jumped to about <strong>14%</strong>. A spike that sudden points to a batch problem rather than a change in customers, and the supplier did turn out to have a quality issue. Watching refund rates by product and month catches this kind of problem early.</p>
+
+<h2 id="customers">6. Customers: who comes back?</h2>
+<p>Of the 145,900 new visitors in 2014, about <strong>13%</strong> came back at least once. Those who returned did so <strong>33 days</strong> after their first visit on average (anywhere from 1 to 69 days).</p>
+<div class="tw"><table class="spec"><thead><tr><th>Session type</th><th>Sessions</th><th>Conversion rate</th><th>Revenue per session</th></tr></thead><tbody>
+<tr><td>New</td><td>149,787</td><td>6.80%</td><td>$4.34</td></tr>
+<tr><td>Repeat</td><td>33,577</td><td>8.11%</td><td>$5.17</td></tr>
+</tbody></table></div>
+<p>Returning visitors convert about <strong>19% better</strong> and bring in about <strong>19% more revenue per session</strong>. They also mostly arrive through direct visits, organic search and brand searches, which cost little or nothing. Paying full price to win them back through nonbrand ads would be wasted money.</p>
+
+<h2 id="takeaways">Takeaways and next steps</h2>
+<ul>
+<li>Breaking an average down (by device, page or product) is where most insights came from. The campaign looked weak overall but was healthy on desktop.</li>
+<li>The two page tests show the value of measuring a change properly: the same time window, the same traffic, and one clear metric.</li>
+<li>Growth came from both more visitors and better conversion, and returning customers are the cheapest revenue the store has.</li>
+<li>Next, I would build a retention campaign around the 30-day return window and track its effect with a holdout group.</li>
+</ul>
+<a class="btn" href="https://github.com/trieulch/E-commerce-Analysis" target="_blank" rel="noopener">View code on GitHub</a>
+  </article>
+</main>
+
+<footer class="site-foot">© Le Chi Hoang Trieu</footer>
+
+</body>
+</html>
