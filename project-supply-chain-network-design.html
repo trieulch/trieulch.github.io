@@ -142,19 +142,24 @@ report: % of runs in which each plant is open</code></pre>
 <p>The four plants in Brazil and India are open in every single run, so that part of the decision is solid. Japan's large plant is open most of the time. The small plants in Japan and Germany are the real "it depends" decisions: they only make sense when demand happens to land in the right place. The total monthly cost averages $57.5M, and 90% of runs fall between $47.0M and $67.9M.</p>
 <p>How many runs are enough? I ran 200 runs with two different random seeds and the percentages moved by only a few points, so 1,000 gives a steady picture.</p>
 
-<h3>PuLP versus Monte Carlo: what is the difference?</h3>
-<p>They are not rivals. PuLP is the tool that solves one planning problem. Monte Carlo is a way of using that tool again and again with random inputs, to see how far the answer can be trusted.</p>
-<div class="tw"><table class="spec"><thead><tr><th></th><th>PuLP (one solve)</th><th>Monte Carlo (1,000 solves)</th></tr></thead><tbody>
-<tr><td>What it is</td><td>A library that builds the model and calls a solver (CBC)</td><td>A simulation method that re-runs the model with random demand</td></tr>
+<h3>MILP versus Monte Carlo: optimisation vs simulation</h3>
+<p>They are not rivals, and they work at different levels. MILP is an optimisation model: for one set of inputs, it finds the best decision. Monte Carlo is a simulation method: it feeds the model many random inputs and counts what comes out, to see how far that decision can be trusted. PuLP is simply the Python library I used to write the MILP and send it to the CBC solver.</p>
+<div class="tw"><table class="spec"><thead><tr><th></th><th>MILP (optimisation)</th><th>Monte Carlo (simulation)</th></tr></thead><tbody>
+<tr><td>Type of method</td><td>Optimisation: finds the best decision</td><td>Simulation: samples random inputs and measures the spread of outcomes</td></tr>
+<tr><td>What it is in this project</td><td>The network model, written in PuLP and solved by CBC</td><td>A loop that re-solves the same MILP with random demand</td></tr>
+<tr><td>How it works</td><td>Branch-and-bound: the solver relaxes the yes/no variables, branches on open/closed and prunes options that can't beat the best answer found so far</td><td>Draw demand, solve, record the result; repeat 1,000 times, then compute averages, percentiles and frequencies</td></tr>
 <tr><td>Question it answers</td><td>"With this demand, what is the cheapest network?"</td><td>"If demand moves around, which decisions still hold?"</td></tr>
 <tr><td>Demand used</td><td>One fixed set of numbers</td><td>1,000 random sets around the base (mean 1, standard deviation 15%)</td></tr>
+<tr><td>Randomness</td><td>None: same input, same answer every time</td><td>Built in: results depend on the random draws (a fixed seed makes them reproducible)</td></tr>
 <tr><td>Number of solves</td><td>1</td><td>1,000</td></tr>
+<tr><td>Who calculates the cost?</td><td>The MILP: fixed costs of open plants + (production + freight) x flows</td><td>Nobody new: it collects the 1,000 costs the MILP returns and summarises them</td></tr>
 <tr><td>Result</td><td>One answer: $57,445,000 per month, 5 plants open</td><td>A distribution: mean $57.5M (5th to 95th percentile $47.0M to $67.9M) and the % of runs in which each plant is open</td></tr>
 <tr><td>How certain is it?</td><td>Exact for the assumed demand, but says nothing about risk</td><td>Shows which decisions are solid (Brazil and India plants: 100% of runs) and which depend on demand (JAP_LOW 58.6%, GER_LOW 23.2%)</td></tr>
-<tr><td>Depends on</td><td>Nothing else</td><td>PuLP: the loop calls the same model every time</td></tr>
+<tr><td>Depends on</td><td>Nothing else</td><td>A model to run: here the MILP, but it could wrap any model, even a spreadsheet formula</td></tr>
 <tr><td>Use it when</td><td>You need a quick answer or a named scenario such as freight x5</td><td>Real money is at stake and demand is uncertain</td></tr>
 </tbody></table></div>
-<p>In this project they work together: the Monte Carlo loop calls the same PuLP model that produced the base case. Their results are consistent. The base case costs $57.4M and the Monte Carlo average is $57.5M, a little higher. The five plants in the base case are the ones that the simulation opens most often. What the simulation adds is the range of possible costs, and the warning that the small plants in Japan and Germany are decisions that depend on how demand turns out.</p>
+<p>In one line: the MILP finds the best answer for one scenario; Monte Carlo runs the MILP across many random scenarios to test how robust that answer is.</p>
+<p>In this project they work together: the Monte Carlo loop calls the same MILP that produced the base case. Their results are consistent. The base case costs $57.4M and the Monte Carlo average is $57.5M, a little higher. The five plants in the base case are the ones that the simulation opens most often. What the simulation adds is the range of possible costs, and the warning that the small plants in Japan and Germany are decisions that depend on how demand turns out.</p>
 
 <h2 id="takeaways">Takeaways and next steps</h2>
 <ul>
